@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const promotionSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema({
   titre: {
     type: String,
     required: true,
@@ -46,4 +46,4 @@ const promotionSchema = new mongoose.Schema({
 });
 
 
-module.exports = mongoose.model('Promotion', promotionSchema);
+module.exports = mongoose.model('Promotion', userSchema);
