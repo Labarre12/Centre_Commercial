@@ -1,0 +1,63 @@
+controller :
+
+Admin :
+page login :
+| Fonctionnalité         | Route (exemple)                       | Méthode HTTP | Description rapide                                                          |
+| ---------------------- | ------------------------------------- | ------------ | --------------------------------------------------------------------------- |
+| Connexion (login)      | `/api/auth/login`                     | POST         | Vérifier les identifiants et connecter l’utilisateur                        |
+| Inscription (register) | `/api/auth/register`                  | POST         | Créer un nouvel utilisateur avec rôle spécifique                            |
+| Filtrage par rôle      | `/api/auth/login` ou `/api/auth/role` | POST / GET   | S’assurer que seul un rôle autorisé peut se connecter (ex: admin vs client) |
+
+gestion boutique :
+| Fonctionnalité                                      | Route (exemple)                         | Méthode HTTP | Description                                                                                                 |
+| --------------------------------------------------- | --------------------------------------- | ------------ | ----------------------------------------------------------------------------------------------------------- |
+|   Créer une boutique                                | `/api/boutiques`                        | POST         | Ajouter une nouvelle boutique avec toutes ses infos (libelle, description, dates, url, horaires, catégorie) |
+|   Lister toutes les boutiques                       | `/api/boutiques`                        | GET          | Retourne la liste complète des boutiques                                                                    |
+|   Lister les emplacements disponibles (liste box)   | `/api/boutiques/boxes`                  | GET          | Retourne uniquement les boutiques disponibles ou libres                                                     |
+|   Filtrer boutiques ouvertes                        | `/api/boutiques/open`                   | GET          | Retourne les boutiques dont l'heure actuelle est entre `ouverture` et `fermeture`                           |
+|   Filtrer boutiques fermées                         | `/api/boutiques/closed`                 | GET          | Retourne les boutiques actuellement fermées                                                                 |
+|   Mettre à jour une boutique                        | `/api/boutiques/:id`                    | PUT          | Modifier les informations d’une boutique spécifique                                                         |
+|   Supprimer une boutique                            | `/api/boutiques/:id`                    | DELETE       | Supprimer une boutique par son id                                                                           |
+|   Lister boutiques par catégorie                    | `/api/boutiques/categorie/:idCategorie` | GET          | Filtre les boutiques selon `idCategorie`                                                                    |
+|   Loyer mensuel/annuel                              | `/api/boutiques/loyer`                  | GET          | Retourne le loyer payé ou non pour chaque boutique (calculer à partir de `dateDebut` et `dateFin`)          |
+|   Boutiques ayant payé ou non                       | `/api/boutiques/loyer/status`           | GET          | Filtre les boutiques selon si elles ont payé ou pas leur loyer                                              |
+
+tableau bords :
+| Fonctionnalité                           | Route (exemple)                                        | Méthode HTTP | Description                                                                                 |
+| ---------------------------------------- | ------------------------------------------------------ | ------------ | ------------------------------------------------------------------------------------------- |
+|   Nombre total de clients                | `/api/dashboard/clients/count`                         | GET          | Retourne le nombre total de clients                                                         |
+|   Nombre de clients par filtre           | `/api/dashboard/clients?dateDebut=&dateFin=&achatMin=` | GET          | Retourne le nombre de clients selon des filtres (date d’inscription, montant d’achat, etc.) |
+|   Clients qui achètent le plus souvent   | `/api/dashboard/clients/top-buyers`                    | GET          | Retourne les clients classés par nombre d’achats                                            |
+|   Clients qui dépensent le plus          | `/api/dashboard/clients/top-spenders`                  | GET          | Retourne les clients classés par montant total dépensé                                      |
+|   Boutique qui vend le plus              | `/api/dashboard/boutiques/top-sales`                   | GET          | Retourne les boutiques classées par total des ventes (quantité x prix)                      |
+|   Suivi des acheteurs (historique)       | `/api/dashboard/clients/:idAcheteur/history`           | GET          | Retourne toutes les ventes d’un acheteur spécifique                                         |
+|   Ventes par produit                     | `/api/dashboard/products/top-sales`                    | GET          | Retourne les produits les plus vendus                                                       |
+|   Statistiques par période               | `/api/dashboard/sales?start=&end=`                     | GET          | Retourne le total des ventes, clients et boutiques pour une période donnée                  |
+|   Ventes par boutique                    | `/api/dashboard/boutiques/:idBoutique/sales`           | GET          | Retourne toutes les ventes d’une boutique spécifique                                        |
+
+gestion promotion
+| Fonction                     | Méthode HTTP | URL                 | Description                                         | Filtrage / Options                                             |
+| ---------------------------- | ------------ | ------------------- | --------------------------------------------------- | -------------------------------------------------------------- |
+| Créer une promotion          | POST         | /api/promotions     | Ajouter une nouvelle promotion dans la base         | Boutiques concernées, produits, type de réduction, dates       |
+| Lister toutes les promotions | GET          | /api/promotions     | Récupérer toutes les promotions                     | Filtrer par boutique, date (actives ou non), type de réduction |
+| Voir une promotion           | GET          | /api/promotions/:id | Récupérer les détails d’une promotion spécifique    | ID de la promotion                                             |
+| Mettre à jour une promotion  | PUT          | /api/promotions/:id | Modifier les informations d’une promotion existante | ID de la promotion                                             |
+| Supprimer une promotion      | DELETE       | /api/promotions/:id | Supprimer une promotion de la base                  | ID de la promotion                                             |
+
+gestion de box emplacement :
+| Fonction                     | Méthode HTTP | URL                   | Description                                 | Filtrage / Options                                |
+| ---------------------------- | ------------ | --------------------- | ------------------------------------------- | ------------------------------------------------- |
+| Ajouter un emplacement       | POST         | /api/emplacements     | Ajouter un nouvel emplacement de boutique   | Coordonnées, image (plan ou photo), disponibilité |
+| Lister tous les emplacements | GET          | /api/emplacements     | Récupérer la liste de tous les emplacements | Filtrer par disponibilité, par zone               |
+| Voir un emplacement          | GET          | /api/emplacements/:id | Détails d’un emplacement précis             | ID emplacement                                    |
+| Mettre à jour un emplacement | PUT          | /api/emplacements/:id | Modifier un emplacement existant            | ID, coordonnées, image, disponibilité             |
+| Supprimer un emplacement     | DELETE       | /api/emplacements/:id | Supprimer un emplacement                    | ID emplacement                                    |
+
+gestion de parking :
+| Fonction                      | Méthode HTTP | URL                           | Description                        | Filtrage / Options                                 |
+| ----------------------------- | ------------ | ----------------------------- | ---------------------------------- | -------------------------------------------------- |
+| Réserver un parking           | POST         | /api/parking/reservations     | Ajouter une réservation            | ID parking, ID utilisateur, date/heure début & fin |
+| Lister les réservations       | GET          | /api/parking/reservations     | Voir toutes les réservations       | Filtrer par date, par utilisateur, par parking     |
+| Voir une réservation          | GET          | /api/parking/reservations/:id | Détails d’une réservation          | ID réservation                                     |
+| Mettre à jour une réservation | PUT          | /api/parking/reservations/:id | Modifier une réservation existante | ID réservation, dates/horaires                     |
+| Annuler une réservation       | DELETE       | /api/parking/reservations/:id | Supprimer une réservation          | ID réservation                                     |
