@@ -1,0 +1,65 @@
+client :
+
+Promotions disponibles 
+| Fonction                 | Méthode HTTP | URL                          | Description                         | Filtrage / Options                      |
+| ------------------------ | ------------ | ---------------------------- | ----------------------------------- | --------------------------------------- |
+| Liste promotions actives | GET          | /api/promotions              | Voir toutes les promotions en cours | Filtrer par boutique, type de réduction |
+| Détails promotion        | GET          | /api/promotions/:idPromotion | Voir détails d’une promotion        | ID promotion                            |
+
+Boutiques disponibles
+| Fonction           | Méthode HTTP | URL                        | Description                                 | Filtrage / Options                               |
+| ------------------ | ------------ | -------------------------- | ------------------------------------------- | ------------------------------------------------ |
+| Liste boutiques    | GET          | /api/boutiques             | Voir toutes les boutiques disponibles       | Filtrer par catégorie, ouverture/fermeture, zone |
+| Détails boutique   | GET          | /api/boutiques/:idBoutique | Informations détaillées sur une boutique    | Horaires, description, URL, catégorie            |
+| Boutiques ouvertes | GET          | /api/boutiques/open        | Liste boutiques ouvertes à un moment précis | Filtrer par heure ou jour                        |
+
+Commande de produit
+| Fonction         | Méthode HTTP | URL                              | Description                        | Filtrage / Options                         |
+| ---------------- | ------------ | -------------------------------- | ---------------------------------- | ------------------------------------------ |
+| Passer commande  | POST         | /api/commandes                   | Commander un ou plusieurs produits | ID produit, quantité, adresse livraison    |
+| Liste commandes  | GET          | /api/clients/:idClient/commandes | Voir l’historique de ses commandes | Filtrer par statut (livrée/en cours), date |
+| Détails commande | GET          | /api/commandes/:idCommande       | Détails d’une commande spécifique  | ID commande                                |
+| Annuler commande | DELETE       | /api/commandes/:idCommande       | Annuler une commande non livrée    | ID commande                                |
+
+Résultat produit / recherche
+| Fonction                | Méthode HTTP | URL                                 | Description                           | Filtrage / Options                         |
+| ----------------------- | ------------ | ----------------------------------- | ------------------------------------- | ------------------------------------------ |
+| Rechercher produit      | GET          | /api/produits/search                | Chercher un produit par mot-clé       | Filtrer par nom, catégorie, prix, boutique |
+| Voir produit            | GET          | /api/produits/:idProduit            | Détails d’un produit                  | ID produit                                 |
+| Liste produits boutique | GET          | /api/boutiques/:idBoutique/produits | Voir tous les produits d’une boutique | Filtrer par catégorie, promotion           |
+
+Avis client
+| Fonction       | Méthode HTTP | URL                           | Description                     | Filtrage / Options       |
+| -------------- | ------------ | ----------------------------- | ------------------------------- | ------------------------ |
+| Ajouter avis   | POST         | /api/produits/:idProduit/avis | Laisser un avis pour un produit | Note, commentaire        |
+| Liste avis     | GET          | /api/produits/:idProduit/avis | Voir tous les avis d’un produit | Filtrer par note ou date |
+| Modifier avis  | PUT          | /api/avis/:idAvis             | Modifier son avis existant      | Note, commentaire        |
+| Supprimer avis | DELETE       | /api/avis/:idAvis             | Supprimer son avis              | ID avis                  |
+
+Agenda / horaires et promotions à venir
+| Fonction                     | Méthode HTTP | URL                                | Description                             | Filtrage / Options                      |
+| ---------------------------- | ------------ | ---------------------------------- | --------------------------------------- | --------------------------------------- |
+| Voir agenda boutiques        | GET          | /api/boutiques/agenda              | Voir horaires d’ouverture et fermetures | Filtrer par date, boutique              |
+| Voir promotions à venir      | GET          | /api/promotions/upcoming           | Promotions à venir ou actives           | Filtrer par boutique, type de réduction |
+| Voir horaires d’une boutique | GET          | /api/boutiques/:idBoutique/horaire | Détail des horaires d’une boutique      | Par jour, ouverture/fermeture           |
+
+Profil client :
+| Fonction         | Méthode HTTP | URL                    | Description                         | Filtrage / Options             |
+| ---------------- | ------------ | ---------------------- | ----------------------------------- | ------------------------------ |
+| Voir profil      | GET          | /api/clients/:idClient | Informations personnelles du client | Nom, mail, contact             |
+| Modifier profil  | PUT          | /api/clients/:idClient | Mettre à jour ses informations      | Adresse, contact, mot de passe |
+| Supprimer compte | DELETE       | /api/clients/:idClient | Supprimer son compte                | ID client                      |
+
+Boutiques Foodcourt (page séparée) :
+| Fonction                   | Méthode HTTP | URL                                  | Description                         | Filtrage / Options                         |
+| -------------------------- | ------------ | ------------------------------------ | ----------------------------------- | ------------------------------------------ |
+| Liste boutiques Foodcourt  | GET          | /api/boutiques/foodcourt             | Voir toutes les boutiques foodcourt | Filtrer par horaire, catégorie, promotions |
+| Détails boutique Foodcourt | GET          | /api/boutiques/foodcourt/:idBoutique | Infos détaillées                    | Horaires, produits, promotions             |
+
+Authentification (login / inscription) :
+| Fonction          | Méthode HTTP | URL                | Description                               | Filtrage / Options                                                             |
+| ----------------- | ------------ | ------------------ | ----------------------------------------- | ------------------------------------------------------------------------------ |
+| Inscription       | POST         | /api/auth/register | Créer un nouveau compte (client ou admin) | Nom, email, mot de passe, rôle (client/admin/propriétaire)                     |
+| Connexion / Login | POST         | /api/auth/login    | Se connecter avec ses identifiants        | Email, mot de passe, retour token JWT                                          |
+| Filtrage par rôle | POST         | /api/auth/login    | Login filtré selon le rôle                | Vérifie si le rôle correspond au compte (ex : client vs admin vs propriétaire) |
+| Déconnexion       | POST         | /api/auth/logout   | Déconnecter le compte                     | Supprimer ou invalider le token côté serveur/client                            |

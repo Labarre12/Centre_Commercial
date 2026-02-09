@@ -1,0 +1,64 @@
+boutique :
+
+gestion de produit :
+| Fonction             | Méthode HTTP | URL                                 | Description                                 | Filtrage / Options                               |
+| -------------------- | ------------ | ----------------------------------- | ------------------------------------------- | ------------------------------------------------ |
+| Ajouter un produit   | POST         | /api/boutiques/:idBoutique/produits | Ajouter un nouveau produit dans la boutique | ID catégorie, couleur, image, description        |
+| Lister les produits  | GET          | /api/boutiques/:idBoutique/produits | Récupérer tous les produits de la boutique  | Filtrer par catégorie, couleur, promotion active |
+| Voir un produit      | GET          | /api/produits/:idProduit            | Détails d’un produit                        | ID produit                                       |
+| Modifier un produit  | PUT          | /api/produits/:idProduit            | Mettre à jour un produit existant           | Image, description, catégorie                    |
+| Supprimer un produit | DELETE       | /api/produits/:idProduit            | Supprimer un produit                        | ID produit                                       |
+
+profil :
+| Fonction        | Méthode HTTP | URL                        | Description                                   | Filtrage / Options                             |
+| --------------- | ------------ | -------------------------- | --------------------------------------------- | ---------------------------------------------- |
+| Voir profil     | GET          | /api/boutiques/:idBoutique | Récupérer les informations de la boutique     | ID boutique                                    |
+| Modifier profil | PUT          | /api/boutiques/:idBoutique | Mettre à jour les informations de la boutique | Libellé, description, horaires, URL, catégorie |
+
+Suivi des clients :
+| Fonction       | Méthode HTTP | URL                                    | Description                                            | Filtrage / Options                |
+| -------------- | ------------ | -------------------------------------- | ------------------------------------------------------ | --------------------------------- |
+| Liste clients  | GET          | /api/boutiques/:idBoutique/clients     | Voir tous les clients ayant acheté dans la boutique    | Filtrer par date, montant dépensé |
+| Détails client | GET          | /api/clients/:idClient                 | Voir détails d’un client                               | Achats, historique, contact       |
+| Clients VIP    | GET          | /api/boutiques/:idBoutique/clients/top | Voir clients qui achètent le plus ou dépensent le plus | Par période                       |
+
+Paiement du loyer :
+| Fonction           | Méthode HTTP | URL                              | Description                   | Filtrage / Options                    |
+| ------------------ | ------------ | -------------------------------- | ----------------------------- | ------------------------------------- |
+| Ajouter paiement   | POST         | /api/boutiques/:idBoutique/loyer | Enregistrer paiement de loyer | Mois, année, montant                  |
+| Liste paiements    | GET          | /api/boutiques/:idBoutique/loyer | Voir historique des loyers    | Filtrer par mois/année, payé/non payé |
+| Modifier paiement  | PUT          | /api/loyer/:idLoyer              | Corriger un paiement          | Montant, date, statut                 |
+| Supprimer paiement | DELETE       | /api/loyer/:idLoyer              | Supprimer un paiement         | ID paiement                           |
+
+Gestion des promotions :
+| Fonction            | Méthode HTTP | URL                                   | Description                                       | Filtrage / Options                               |
+| ------------------- | ------------ | ------------------------------------- | ------------------------------------------------- | ------------------------------------------------ |
+| Ajouter promotion   | POST         | /api/promotions                       | Créer une promotion                               | Boutique(s) ou produit(s), type, valeur, période |
+| Liste promotions    | GET          | /api/boutiques/:idBoutique/promotions | Voir toutes les promotions actives de la boutique | Filtrer par actif/non actif                      |
+| Voir promotion      | GET          | /api/promotions/:idPromotion          | Détails d’une promotion                           | ID promotion                                     |
+| Modifier promotion  | PUT          | /api/promotions/:idPromotion          | Mettre à jour promotion                           | Dates, produits/boutiques, type réduction        |
+| Supprimer promotion | DELETE       | /api/promotions/:idPromotion          | Supprimer une promotion                           | ID promotion                                     |
+
+Suivi des ventes :
+| Fonction            | Méthode HTTP | URL                                     | Description                      | Filtrage / Options                |
+| ------------------- | ------------ | --------------------------------------- | -------------------------------- | --------------------------------- |
+| Liste ventes        | GET          | /api/boutiques/:idBoutique/ventes       | Voir toutes les ventes           | Filtrer par date, client, produit |
+| Détails vente       | GET          | /api/ventes/:idVente                    | Voir détails d’une vente         | ID vente                          |
+| Statistiques ventes | GET          | /api/boutiques/:idBoutique/ventes/stats | Top produits, chiffre d’affaires | Période, produit, client          |
+
+Gestion des employés :
+| Fonction          | Méthode HTTP | URL                                 | Description               | Filtrage / Options |
+| ----------------- | ------------ | ----------------------------------- | ------------------------- | ------------------ |
+| Ajouter employé   | POST         | /api/boutiques/:idBoutique/employes | Ajouter un nouvel employé | Nom, rôle, contact |
+| Liste employés    | GET          | /api/boutiques/:idBoutique/employes | Lister tous les employés  | Filtrer par rôle   |
+| Modifier employé  | PUT          | /api/employes/:idEmploye            | Modifier infos employé    | Nom, rôle, contact |
+| Supprimer employé | DELETE       | /api/employes/:idEmploye            | Supprimer un employé      | ID employé         |
+
+Gestion des commandes produits en ligne :
+| Fonction           | Méthode HTTP | URL                                  | Description                 | Filtrage / Options               |
+| ------------------ | ------------ | ------------------------------------ | --------------------------- | -------------------------------- |
+| Ajouter commande   | POST         | /api/boutiques/:idBoutique/commandes | Créer une commande en ligne | Produits, quantités, client      |
+| Liste commandes    | GET          | /api/boutiques/:idBoutique/commandes | Voir toutes les commandes   | Filtrer par statut, client, date |
+| Détails commande   | GET          | /api/commandes/:idCommande           | Détails d’une commande      | ID commande                      |
+| Modifier commande  | PUT          | /api/commandes/:idCommande           | Mettre à jour commande      | Produits, quantités, statut      |
+| Supprimer commande | DELETE       | /api/commandes/:idCommande           | Annuler une commande        | ID commande                      |
