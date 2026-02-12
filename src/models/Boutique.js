@@ -44,4 +44,13 @@ const userSchema = new mongoose.Schema({
   timestamps: true
 });
 
+// Get a boutique by its ID
+userSchema.statics.getByIdBoutique = async function(idBoutique) {
+  try {
+    return await this.findOne({ idboutique: idBoutique });
+  } catch (error) {
+    throw error;
+  }
+};
+
 module.exports = mongoose.model('Boutique', userSchema);
