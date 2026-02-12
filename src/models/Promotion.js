@@ -1,6 +1,11 @@
 const mongoose = require('mongoose');
+const Counter = require('./Counter');
 
 const userSchema = new mongoose.Schema({
+  idpromotion: {
+    type: String,
+    trim: true
+  },
   titre: {
     type: String,
     required: true,
@@ -44,6 +49,21 @@ const userSchema = new mongoose.Schema({
 }, {
   timestamps: true
 });
+
+userSchema.pre("save", async function(next) {
+  if (!this.idpromotion) {
+
+    const counter = await Counter.findOneAndUpdate(
+      { name: "promotion" },
+      { $inc: { seq: 1 } },
+      { new: true, upsert: true }
+    );
+
+    this.idpromotion = "PROMO" + counter.seq.toString().padStart(3, "0");
+  }
+
+  next();
+})
 
 
 module.exports = mongoose.model('Promotion', userSchema);

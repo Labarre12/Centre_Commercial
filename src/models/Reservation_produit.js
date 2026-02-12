@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
+const Counter = require('./Counter');
 
 const userSchema = new mongoose.Schema({
     idreservation: {
     type: String,
-    required: true,
     unique: true,
   },
   idproduit: {
@@ -26,4 +26,19 @@ const userSchema = new mongoose.Schema({
   timestamps: true
 });
 
-module.exports = mongoose.model('Reservation_client', userSchema);
+userSchema.pre("save", async function(next) {
+  if (!this.idreservation) {
+
+    const counter = await Counter.findOneAndUpdate(
+      { name: "reservation_produit" },
+      { $inc: { seq: 1 } },
+      { new: true, upsert: true }
+    );
+
+    this.idreservation = "RESERV" + counter.seq.toString().padStart(3, "0");
+  }
+
+  next();
+})
+
+module.exports = mongoose.model('Reservation_produit', userSchema);
