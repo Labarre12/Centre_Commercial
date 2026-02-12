@@ -1,4 +1,4 @@
-Admin :
+Admin : 6
 
 page login :
 | Fonctionnalité         | Route (exemple)                       | Méthode HTTP | Description rapide                                                          |
@@ -41,7 +41,6 @@ gestion promotion
 | Lister toutes les promotions | GET          | /api/promotions     | Récupérer toutes les promotions                     | Filtrer par boutique, date (actives ou non), type de réduction |
 | Voir une promotion           | GET          | /api/promotions/:id | Récupérer les détails d’une promotion spécifique    | ID de la promotion                                             |
 | Mettre à jour une promotion  | PUT          | /api/promotions/:id | Modifier les informations d’une promotion existante | ID de la promotion                                             |
-| Supprimer une promotion      | DELETE       | /api/promotions/:id | Supprimer une promotion de la base                  | ID de la promotion                                             |
 
 gestion de box emplacement :
 | Fonction                     | Méthode HTTP | URL                   | Description                                 | Filtrage / Options                                |
@@ -50,7 +49,6 @@ gestion de box emplacement :
 | Lister tous les emplacements | GET          | /api/emplacements     | Récupérer la liste de tous les emplacements | Filtrer par disponibilité, par zone               |
 | Voir un emplacement          | GET          | /api/emplacements/:id | Détails d’un emplacement précis             | ID emplacement                                    |
 | Mettre à jour un emplacement | PUT          | /api/emplacements/:id | Modifier un emplacement existant            | ID, coordonnées, image, disponibilité             |
-| Supprimer un emplacement     | DELETE       | /api/emplacements/:id | Supprimer un emplacement                    | ID emplacement                                    |
 
 gestion de parking :
 | Fonction                      | Méthode HTTP | URL                           | Description                        | Filtrage / Options                                 |
@@ -59,4 +57,3 @@ gestion de parking :
 | Lister les réservations       | GET          | /api/parking/reservations     | Voir toutes les réservations       | Filtrer par date, par utilisateur, par parking     |
 | Voir une réservation          | GET          | /api/parking/reservations/:id | Détails d’une réservation          | ID réservation                                     |
 | Mettre à jour une réservation | PUT          | /api/parking/reservations/:id | Modifier une réservation existante | ID réservation, dates/horaires                     |
-| Annuler une réservation       | DELETE       | /api/parking/reservations/:id | Supprimer une réservation          | ID réservation                                     |
