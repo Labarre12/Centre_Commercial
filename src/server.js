@@ -4,6 +4,8 @@ require('dotenv').config();
 const connectDB = require('./config/database');
 const userRoutes = require('./routes/userRoutes');
 
+const clientRoutes = require('./routes/client/clientRoutes');
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 
@@ -19,6 +21,8 @@ app.use(express.urlencoded({ extended: true }));
 
 // Routes
 app.use('/api/users', userRoutes);
+
+app.use('/api/client', clientRoutes);
 
 // Route de base
 app.get('/', (req, res) => {
