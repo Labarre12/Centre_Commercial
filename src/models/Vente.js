@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
+const Counter = require('./Counter');
 
 const userSchema = new mongoose.Schema({
   idVente: {
     type: String,
-    required: true,
     unique: true,
   },
   idBoutique: {
@@ -29,5 +29,20 @@ const userSchema = new mongoose.Schema({
 }, {
   timestamps: true
 });
+
+userSchema.pre("save", async function(next) {
+  if (!this.idVente) {
+
+    const counter = await Counter.findOneAndUpdate(
+      { name: "vente" },
+      { $inc: { seq: 1 } },
+      { new: true, upsert: true }
+    );
+
+    this.idVente = "VENTE" + counter.seq.toString().padStart(3, "0");
+  }
+
+  next();
+})
 
 module.exports = mongoose.model('Vente', userSchema);
