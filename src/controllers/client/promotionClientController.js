@@ -25,6 +25,9 @@ exports.getPromotionById = async (req, res) => {
     }
     res.status(200).json(promotion);
   } catch (error) {
+    if (error.name === 'CastError') {
+      return res.status(404).json({ message: 'Promotion non trouvée' });
+    }
     res.status(500).json({ message: error.message });
   }
 };
