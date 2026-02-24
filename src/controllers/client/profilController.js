@@ -38,3 +38,15 @@ exports.updateProfilClient = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+// Supprimer compte client
+exports.deleteProfilClient = async (req, res) => {
+  try {
+    const { idClient } = req.params;
+    const client = await Acheteur.findOneAndDelete({ idAcheteur: idClient });
+    if (!client) return res.status(404).json({ message: 'Client non trouvé' });
+    res.json({ message: 'Compte supprimé avec succès' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};

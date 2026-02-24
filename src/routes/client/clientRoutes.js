@@ -40,6 +40,7 @@ router.delete('/avis/:idAvis', avisClientController.deleteAvis);
 // Profil client
 router.get('/clients/:idClient', profilController.getProfilClient);
 router.put('/clients/:idClient', profilController.updateProfilClient);
+router.delete('/clients/:idClient', profilController.deleteProfilClient);
 
 // Connexion client
 router.post('/connexion/register', connexionController.register);
