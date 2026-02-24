@@ -10,6 +10,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  idProduit: {
+    type: String,
+    required: true,
+  },
   idAcheteur: {
     type: String,
     required: true,
