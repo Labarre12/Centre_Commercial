@@ -11,4 +11,10 @@ router.get('/boutique/:idBoutique', produitController.getListProduit);
 // Obtenir un produit par son ID
 router.get('/:idProduit', produitController.getProduitByIDProduit);
 
+// Modifier un produit
+router.put('/:idProduit', produitController.updateProduit);
+
+// Supprimer un produit
+router.delete('/:idProduit', produitController.deleteProduit);
+
 module.exports = router;

@@ -44,6 +44,15 @@ const userSchema = new mongoose.Schema({
   timestamps: true
 });
 
+// Get all boutiques
+userSchema.statics.getAllBoutiques = async function() {
+  try {
+    return await this.find();
+  } catch (error) {
+    throw error;
+  }
+};
+
 // Get a boutique by its ID
 userSchema.statics.getByIdBoutique = async function(idBoutique) {
   try {
