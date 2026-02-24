@@ -32,4 +32,7 @@ const commandeSchema = new mongoose.Schema({
   timestamps: true
 });
 
+const auditPlugin = require('../plugins/auditPlugin');
+commandeSchema.plugin(auditPlugin, { modelName: 'Commande' });
+
 module.exports = mongoose.model('Commande', commandeSchema);

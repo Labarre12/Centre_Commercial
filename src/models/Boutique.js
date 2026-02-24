@@ -62,4 +62,7 @@ userSchema.statics.getByIdBoutique = async function(idBoutique) {
   }
 };
 
+const auditPlugin = require('../plugins/auditPlugin');
+userSchema.plugin(auditPlugin, { modelName: 'Boutique' });
+
 module.exports = mongoose.model('Boutique', userSchema);

@@ -20,4 +20,7 @@ const userSchema = new mongoose.Schema({
   timestamps: true
 });
 
+const auditPlugin = require('../plugins/auditPlugin');
+userSchema.plugin(auditPlugin, { modelName: 'User' });
+
 module.exports = mongoose.model('User', userSchema);
