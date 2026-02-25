@@ -8,15 +8,10 @@ exports.login = async (req, res) => {
       return res.status(400).json({ message: 'Matricule et mot de passe requis' });
     }
 
-    const received = { matricule: matricule.trim(), mdp: mdp.trim().toLowerCase() };
-    console.log('[LOGIN] Reçu :', received);
-
-    // Chercher uniquement par matricule d'abord pour voir ce qui existe
-    const byMatricule = await Admin.findOne({ matricule: received.matricule });
-    console.log('[LOGIN] Trouvé par matricule :', byMatricule ? { matricule: byMatricule.matricule, mdp: byMatricule.mdp, role: byMatricule.role } : null);
-
-    const admin = await Admin.findOne(received);
-    console.log('[LOGIN] Trouvé avec les deux critères :', admin ? 'oui' : 'non');
+    const admin = await Admin.findOne({
+      matricule: matricule.trim(),
+      mdp: mdp.trim().toLowerCase()
+    });
 
     if (!admin) {
       return res.status(401).json({ message: 'Matricule ou mot de passe incorrect' });
