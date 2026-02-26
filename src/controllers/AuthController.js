@@ -11,7 +11,7 @@ exports.login = async (req, res) => {
     const admin = await Admin.findOne({
       matricule: matricule.trim(),
       mdp: mdp.trim().toLowerCase()
-    });
+    }).populate('boutique');
 
     if (!admin) {
       return res.status(401).json({ message: 'Matricule ou mot de passe incorrect' });
@@ -21,7 +21,8 @@ exports.login = async (req, res) => {
       success: true,
       role: admin.role,
       matricule: admin.matricule,
-      id: admin._id
+      id: admin._id,
+      boutique: admin.boutique ?? null
     });
 
   } catch (error) {
