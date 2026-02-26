@@ -37,7 +37,9 @@ app.use('/api/promotions', promotionRoutes);
 app.use('/api/ventes', venteRoutes);
 app.use('/api/employes', employeRoutes);
 app.use('/api/commandes', commandeRoutes);
-app.use('/api/client', clientRoutes);
+
+// Routes client (montées en dernier pour ne pas écraser les routes boutique)
+app.use('/api', clientRoutes);
 
 // Route de base
 app.get('/', (req, res) => {

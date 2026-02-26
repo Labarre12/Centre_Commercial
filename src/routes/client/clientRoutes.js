@@ -3,7 +3,6 @@ const router = express.Router();
 const clientController = require('../../controllers/client/clientController');
 const profilController = require('../../controllers/client/profilController');
 const foodcourtController = require('../../controllers/client/foodcourtController');
-const connexionController = require('../../controllers/client/connexionController');
 const promotionClientController = require('../../controllers/client/promotionClientController');
 const boutiqueClientController = require('../../controllers/client/boutiqueClientController');
 const commandeClientController = require('../../controllers/client/commandeClientController');
@@ -15,21 +14,19 @@ router.get('/promotions/upcoming', clientController.getPromotionsUpcoming);
 router.get('/boutiques/:idBoutique/horaire', clientController.getHoraireBoutique);
 
 // Promotions disponibles
+// GET /api/promotions/:idPromotion → géré par promotionRoutes
 router.get('/promotions', promotionClientController.getPromotions);
-router.get('/promotions/:idPromotion', promotionClientController.getPromotionById);
 
 // Boutiques disponibles (routes statiques avant dynamiques)
+// GET /api/boutiques et GET /api/boutiques/:idBoutique → gérés par boutiqueRoutes
 router.get('/boutiques/open', boutiqueClientController.getBoutiquesOpen);
 router.get('/boutiques/foodcourt', foodcourtController.getBoutiquesFoodcourt);
 router.get('/boutiques/foodcourt/:idBoutique', foodcourtController.getDetailBoutiqueFoodcourt);
-router.get('/boutiques', boutiqueClientController.getBoutiques);
-router.get('/boutiques/:idBoutique', boutiqueClientController.getBoutiqueById);
 
 // Commandes
+// GET /api/commandes/:idCommande et DELETE /api/commandes/:idCommande → gérés par commandeRoutes
 router.post('/commandes', commandeClientController.passerCommande);
 router.get('/clients/:idClient/commandes', commandeClientController.getCommandesClient);
-router.get('/commandes/:idCommande', commandeClientController.getCommandeById);
-router.delete('/commandes/:idCommande', commandeClientController.annulerCommande);
 
 // Avis client
 router.post('/produits/:idProduit/avis', avisClientController.addAvis);
@@ -41,10 +38,5 @@ router.delete('/avis/:idAvis', avisClientController.deleteAvis);
 router.get('/clients/:idClient', profilController.getProfilClient);
 router.put('/clients/:idClient', profilController.updateProfilClient);
 router.delete('/clients/:idClient', profilController.deleteProfilClient);
-
-// Connexion client
-router.post('/connexion/register', connexionController.register);
-router.post('/connexion/login', connexionController.login);
-router.post('/connexion/logout', connexionController.logout);
 
 module.exports = router;
