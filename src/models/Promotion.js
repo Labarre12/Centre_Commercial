@@ -46,4 +46,7 @@ const userSchema = new mongoose.Schema({
 });
 
 
+const auditPlugin = require('../plugins/auditPlugin');
+userSchema.plugin(auditPlugin, { modelName: 'Promotion' });
+
 module.exports = mongoose.model('Promotion', userSchema);

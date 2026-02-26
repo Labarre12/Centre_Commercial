@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
-const userSchema = new mongoose.Schema({
-    idcommande: {
+const commandeSchema = new mongoose.Schema({
+  idcommande: {
     type: String,
     required: true,
     unique: true,
@@ -10,11 +10,16 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  idproduit: {
+  idboutique: {
     type: String,
     required: true,
-    unique: true,
   },
+  produits: [
+    {
+      idproduit: { type: String, required: true },
+      quantite: { type: Number, required: true },
+    }
+  ],
   idAcheteur: {
     type: String,
     required: true,
@@ -27,4 +32,7 @@ const userSchema = new mongoose.Schema({
   timestamps: true
 });
 
-module.exports = mongoose.model('Commande', userSchema);
+const auditPlugin = require('../plugins/auditPlugin');
+commandeSchema.plugin(auditPlugin, { modelName: 'Commande' });
+
+module.exports = mongoose.model('Commande', commandeSchema);
