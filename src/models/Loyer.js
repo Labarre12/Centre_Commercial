@@ -48,5 +48,7 @@ userSchema.pre("save", async function(next) {
 
   next();
 })
+const auditPlugin = require('../plugins/auditPlugin');
+userSchema.plugin(auditPlugin, { modelName: 'Loyer' });
 
 module.exports = mongoose.model('Loyer', userSchema);

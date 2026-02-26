@@ -2,8 +2,8 @@ const mongoose = require('mongoose');
 const Counter = require('./Counter');
 
 
-const userSchema = new mongoose.Schema({
-    idcommande: {
+const commandeSchema = new mongoose.Schema({
+  idcommande: {
     type: String,
     unique: true,
   },
@@ -12,13 +12,16 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-
-  idproduit: {
+  idboutique: {
     type: String,
     required: true,
-    unique: true,
   },
-
+  produits: [
+    {
+      idproduit: { type: String, required: true },
+      quantite: { type: Number, required: true },
+    }
+  ],
   idAcheteur: {
     type: String,
     required: true,
@@ -32,19 +35,7 @@ const userSchema = new mongoose.Schema({
   timestamps: true
 });
 
-userSchema.pre("save", async function(next) {
-  if (!this.idcommande) {
+const auditPlugin = require('../plugins/auditPlugin');
+commandeSchema.plugin(auditPlugin, { modelName: 'Commande' });
 
-    const counter = await Counter.findOneAndUpdate(
-      { name: "commande" },
-      { $inc: { seq: 1 } },
-      { new: true, upsert: true }
-    );
-
-    this.idcommande = "CMD" + counter.seq.toString().padStart(3, "0");
-  }
-
-  next();
-})
-
-module.exports = mongoose.model('Commande', userSchema);
+module.exports = mongoose.model('Commande', commandeSchema);

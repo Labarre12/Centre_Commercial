@@ -3,8 +3,16 @@ const cors = require('cors');
 require('dotenv').config();
 const connectDB = require('./config/database');
 
-//appel dossier routes
+const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
+const produitRoutes = require('./routes/produitRoutes');
+const boutiqueRoutes = require('./routes/boutiqueRoutes');
+const loyerRoutes = require('./routes/loyerRoutes');
+const promotionRoutes = require('./routes/promotionRoutes');
+const venteRoutes = require('./routes/venteRoutes');
+const employeRoutes = require('./routes/employeRoutes');
+const commandeRoutes = require('./routes/commandeRoutes');
+const clientRoutes = require('./routes/clientRoutes');
 
 // routes dossier admins
 const authRoutes = require('./routes/admin/authRoutes');
@@ -28,8 +36,17 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Routes api
+// Routes
+app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/boutiques', boutiqueRoutes);
+app.use('/api/produits', produitRoutes);
+app.use('/api/loyer', loyerRoutes);
+app.use('/api/promotions', promotionRoutes);
+app.use('/api/ventes', venteRoutes);
+app.use('/api/employes', employeRoutes);
+app.use('/api/commandes', commandeRoutes);
+app.use('/api/clients', clientRoutes);
 
 app.use('/api/auth', authRoutes);
 app.use('/api/boutique', boutiqueRoutes);
@@ -48,4 +65,3 @@ app.get('/', (req, res) => {
 app.listen(PORT, () => {
   console.log(`Serveur démarré sur le port ${PORT}`);
 });
-
