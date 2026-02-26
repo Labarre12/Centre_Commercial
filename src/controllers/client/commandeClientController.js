@@ -1,9 +1,42 @@
 const Commande = require('../../models/Commande');
+const Produit  = require('../../models/Produit');
+const jwt      = require('jsonwebtoken');
+const JWT_SECRET = 'ton_secret_jwt';
 
 // Passer une commande
 exports.passerCommande = async (req, res) => {
   try {
-    const commande = new Commande(req.body);
+    // Récupérer idAcheteur depuis le token JWT
+    let idAcheteur = req.body.idAcheteur;
+    const authHeader = req.headers.authorization;
+    if (authHeader && authHeader.startsWith('Bearer ')) {
+      try { const decoded = jwt.verify(authHeader.slice(7), JWT_SECRET); idAcheteur = decoded.id; } catch (_) {}
+    }
+    if (!idAcheteur) return res.status(401).json({ message: 'Non authentifié' });
+
+    // Mapper produits : { produit: mongoId, quantite } → { idproduit, quantite }
+    const produitsRaw = Array.isArray(req.body.produits) ? req.body.produits : [];
+    const produits = produitsRaw.map(p => ({ idproduit: p.produit || p.idproduit, quantite: p.quantite }));
+
+    // Récupérer idboutique depuis le premier produit
+    let idboutique = req.body.idboutique;
+    if (!idboutique && produits.length) {
+      const p = await Produit.findById(produits[0].idproduit).catch(() => null);
+      if (p) idboutique = p.idboutique;
+    }
+
+    const idcommande = 'CMD-' + Date.now();
+    const numero_commande = 'CC-' + new Date().getFullYear() + '-' + Math.floor(Math.random() * 90000 + 10000);
+
+    const commande = new Commande({
+      idcommande,
+      numero_commande,
+      idboutique,
+      produits,
+      idAcheteur,
+      idstatus: 'STA001',
+      adresseLivraison: req.body.adresseLivraison || '',
+    });
     await commande.save();
     res.status(201).json(commande);
   } catch (error) {

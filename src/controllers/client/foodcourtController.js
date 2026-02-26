@@ -22,7 +22,7 @@ exports.getDetailBoutiqueFoodcourt = async (req, res) => {
   try {
     const { idBoutique } = req.params;
 
-    const boutique = await Boutique.findOne({ idboutique: idBoutique, libelle: /foodcourt/i });
+    const boutique = await Boutique.findOne({ idboutique: idBoutique });
     if (!boutique) return res.status(404).json({ message: 'Boutique Foodcourt non trouvée' });
 
     res.json({

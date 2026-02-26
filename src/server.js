@@ -41,11 +41,6 @@ app.use('/api/commandes', commandeRoutes);
 // Routes client (montées en dernier pour ne pas écraser les routes boutique)
 app.use('/api', clientRoutes);
 
-// Route de base
-app.get('/', (req, res) => {
-  res.json({ message: 'Bienvenue sur l\'API' });
-});
-
 // Démarrage du serveur
 app.listen(PORT, () => {
   console.log(`Serveur démarré sur le port ${PORT}`);

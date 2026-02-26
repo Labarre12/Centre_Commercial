@@ -1,5 +1,6 @@
-const Boutique = require('../../models/Boutique');
-const Evenement = require('../../models/Evenement');
+const Boutique   = require('../../models/Boutique');
+const Evenement  = require('../../models/Evenement');
+const Promotion  = require('../../models/Promotion');
 const ParticipationBoutique = require('../../models/Participation_boutique');
 
 // Voir agenda boutiques
@@ -20,7 +21,7 @@ exports.getAgendaBoutiques = async (req, res) => {
       filter.idboutique = boutiqueId;
     }
 
-    const boutiques = await Boutique.find(filter).select('idboutique libelle ouverture fermeture');
+    const boutiques = await Boutique.find(filter).select('idboutique libelle ouverture fermeture dateDebut dateFin categorie');
     res.json(boutiques);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -36,7 +37,7 @@ exports.getPromotionsUpcoming = async (req, res) => {
     if (boutiqueId) filter.idboutique = boutiqueId;
     if (typeReduction) filter.typeReduction = typeReduction;
 
-    const promotions = await Evenement.find(filter).select('idevenement libelle dateDebut dateFin cible idStatus');
+    const promotions = await Promotion.find(filter).select('titre description idBoutiques typeReduction valeur dateDebut dateFin actif');
     res.json(promotions);
   } catch (error) {
     res.status(500).json({ message: error.message });

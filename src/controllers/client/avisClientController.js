@@ -1,9 +1,37 @@
 const Avis = require('../../models/Avis_client');
+const Produit = require('../../models/Produit');
+const jwt = require('jsonwebtoken');
+const JWT_SECRET = 'ton_secret_jwt';
 
 // Ajouter un avis pour un produit
 exports.addAvis = async (req, res) => {
   try {
-    const avis = new Avis({ ...req.body, idProduit: req.params.idProduit });
+    // Récupérer idAcheteur depuis le token JWT si disponible
+    let idAcheteur = req.body.idAcheteur;
+    const authHeader = req.headers.authorization;
+    if (authHeader && authHeader.startsWith('Bearer ')) {
+      try {
+        const decoded = jwt.verify(authHeader.slice(7), JWT_SECRET);
+        idAcheteur = decoded.id;
+      } catch (_) {}
+    }
+
+    // Récupérer idboutique depuis le produit
+    let idboutique = req.body.idboutique;
+    if (!idboutique) {
+      const produit = await Produit.findById(req.params.idProduit).catch(() => null)
+        || await Produit.findOne({ idProduit: req.params.idProduit });
+      if (produit) idboutique = produit.idboutique;
+    }
+
+    const avis = new Avis({
+      ...req.body,
+      idAvis: Date.now().toString(),
+      idProduit: req.params.idProduit,
+      idAcheteur,
+      idboutique,
+      date: new Date(),
+    });
     await avis.save();
     res.status(201).json(avis);
   } catch (error) {
