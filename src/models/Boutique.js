@@ -52,7 +52,6 @@ const userSchema = new mongoose.Schema({
   timestamps: true
 });
 
-<<<<<<< HEAD
 userSchema.pre("save", async function(next) {
   if (!this.idboutique) {
 
@@ -67,7 +66,6 @@ userSchema.pre("save", async function(next) {
 
   next();
 })
-=======
 // Get all boutiques
 userSchema.statics.getAllBoutiques = async function() {
   try {
@@ -88,6 +86,5 @@ userSchema.statics.getByIdBoutique = async function(idBoutique) {
 
 const auditPlugin = require('../plugins/auditPlugin');
 userSchema.plugin(auditPlugin, { modelName: 'Boutique' });
->>>>>>> f31f3e80bc59851d5434a4ca825ced667b88a962
 
 module.exports = mongoose.model('Boutique', userSchema);
