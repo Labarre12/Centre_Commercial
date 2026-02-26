@@ -12,8 +12,6 @@ const promotionRoutes = require('./routes/promotionRoutes');
 const venteRoutes = require('./routes/venteRoutes');
 const employeRoutes = require('./routes/employeRoutes');
 const commandeRoutes = require('./routes/commandeRoutes');
-const clientRoutes = require('./routes/clientRoutes');
-
 const clientRoutes = require('./routes/client/clientRoutes');
 
 const app = express();
@@ -39,8 +37,6 @@ app.use('/api/promotions', promotionRoutes);
 app.use('/api/ventes', venteRoutes);
 app.use('/api/employes', employeRoutes);
 app.use('/api/commandes', commandeRoutes);
-app.use('/api/clients', clientRoutes);
-
 app.use('/api/client', clientRoutes);
 
 // Route de base
