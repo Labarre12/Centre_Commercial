@@ -34,4 +34,7 @@ const userSchema = new mongoose.Schema({
   timestamps: true
 });
 
+const auditPlugin = require('../plugins/auditPlugin');
+userSchema.plugin(auditPlugin, { modelName: 'Loyer' });
+
 module.exports = mongoose.model('Loyer', userSchema);
