@@ -7,7 +7,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     unique: true,
   },
-  numéro: {
+  numero: {
     type: String,
     required: true,
     unique: true,

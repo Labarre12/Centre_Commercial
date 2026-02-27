@@ -26,10 +26,7 @@ const userSchema = new mongoose.Schema({
   idStatus: {
     type: String,
     required: true,
-  },
-  libelle: {
-    type: String,
-    required: true,  }
+  }
 }, {
   timestamps: true
 });

@@ -11,7 +11,6 @@ const userSchema = new mongoose.Schema({
   mdp: {
     type: String,
     required: true,
-    lowercase: true
   },
   role: {
     type: String,

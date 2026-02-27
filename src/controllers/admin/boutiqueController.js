@@ -67,7 +67,7 @@ exports.getClosedBoutiques = async (req, res) => {
 exports.getByCategorie = async (req, res) => {
   try {
     const boutiques = await Boutique.find({
-      idCategorie: req.params.idCategorie
+      idCategorie: Number(req.params.idCategorie)
     });
 
     res.json(boutiques);
