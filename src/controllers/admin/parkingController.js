@@ -1,6 +1,16 @@
 const Reservation = require('../../models/Reservation_parking');
 const Parking = require('../../models/Parking');
 
+// Lister tous les parkings
+exports.getAllParkings = async (req, res) => {
+  try {
+    const parkings = await Parking.find().sort({ idParking: 1 });
+    res.json(parkings);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 // Réserver un parking
 exports.createReservation = async (req, res) => {
   try {

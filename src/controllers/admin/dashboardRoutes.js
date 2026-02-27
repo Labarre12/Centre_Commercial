@@ -1,5 +1,16 @@
 const Vente = require('../../models/Vente');
 const Boutique = require('../../models/Boutique');
+const Acheteur = require('../../models/Acheteur');
+
+// Liste de tous les acheteurs (pour selects)
+exports.getAllAcheteurs = async (req, res) => {
+  try {
+    const clients = await Acheteur.find({}, 'idAcheteur nom mail').sort({ nom: 1 });
+    res.json(clients);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 
 // Nombre total de clients uniques
 exports.getTotalClients = async (req, res) => {

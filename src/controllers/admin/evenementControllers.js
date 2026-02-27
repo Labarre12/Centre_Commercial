@@ -56,6 +56,16 @@ exports.getEvenementById = async (req, res) => {
   }
 };
 
+// ✅ Lister toutes les participations boutique ↔ événement
+exports.getAllParticipations = async (req, res) => {
+  try {
+    const participations = await Participation.find();
+    res.json(participations);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 // ✅ Mettre à jour un événement
 exports.updateEvenement = async (req, res) => {
   try {

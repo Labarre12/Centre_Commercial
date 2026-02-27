@@ -3,6 +3,7 @@ const router = express.Router();
 const dashboard = require('../../controllers/admin/dashboardRoutes');
 
 // Clients
+router.get('/clients/all', dashboard.getAllAcheteurs);
 router.get('/clients/count', dashboard.getTotalClients);
 router.get('/clients', dashboard.getClientsByFilter);
 router.get('/clients/top-buyers', dashboard.getTopBuyers);
