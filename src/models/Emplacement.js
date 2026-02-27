@@ -11,7 +11,15 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
     unique: true,
-  }
+  },
+  zone: {
+    type: String,
+    default: 'RDC',
+  },
+  disponible: {
+    type: Boolean,
+    default: true,
+  },
 }, {
   timestamps: true
 });

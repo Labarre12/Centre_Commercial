@@ -103,54 +103,44 @@ exports.deleteBoutique = async (req, res) => {
   }
 };
 
-// Loyer (payé ou non)
+// Loyer payé ce mois (uniquement les vrais paiements STA006)
 exports.getBoutiquesQuiOntPaye = async (req, res) => {
   try {
     const now = new Date();
-
     const debutMois = new Date(now.getFullYear(), now.getMonth(), 1);
     const finMois = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59);
 
     const loyers = await Loyer.find({
-      datePaiement: {
-        $gte: debutMois,
-        $lte: finMois
-      }
+      datePaiement: { $gte: debutMois, $lte: finMois },
+      idStatus: 'STA006'
     });
 
     res.json(loyers);
-
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
 
-//loyer non payé
+// Loyer non payé : boutiques sans paiement confirmé ce mois
 exports.getBoutiquesNonPaye = async (req, res) => {
   try {
-
     const now = new Date();
-
     const debutMois = new Date(now.getFullYear(), now.getMonth(), 1);
     const finMois = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59);
 
-    // boutiques qui ont payé
-    const loyers = await Loyer.find({
-      datePaiement: {
-        $gte: debutMois,
-        $lte: finMois
-      }
+    // Boutiques qui ont EFFECTIVEMENT payé (STA006) ce mois
+    const loyersPayes = await Loyer.find({
+      datePaiement: { $gte: debutMois, $lte: finMois },
+      idStatus: 'STA006'
     });
+    const boutiquesPaye = loyersPayes.map(l => l.idboutique);
 
-    const boutiquesPaye = loyers.map(l => l.idboutique);
-
-    // toutes les boutiques sauf celles qui ont payé
+    // Toutes les boutiques sauf celles qui ont payé
     const boutiquesNonPaye = await Boutique.find({
       idboutique: { $nin: boutiquesPaye }
     });
 
     res.json(boutiquesNonPaye);
-
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
