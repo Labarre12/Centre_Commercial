@@ -64,7 +64,8 @@ exports.getCommandesClient = async (req, res) => {
       const obj = cmd.toObject();
       let total = 0;
       obj.produits = await Promise.all(obj.produits.map(async item => {
-        const p = await Produit.findById(item.idproduit).select('libelle prix').catch(() => null);
+        const p = await Produit.findById(item.idproduit).select('libelle prix').catch(() => null)
+          || await Produit.findOne({ idProduit: item.idproduit }).select('libelle prix').catch(() => null);
         const prix = p?.prix || 0;
         total += prix * (item.quantite || 1);
         return { ...item, libelle: p?.libelle || 'Produit inconnu', prix };
