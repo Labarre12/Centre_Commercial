@@ -43,7 +43,9 @@ const userSchema = new mongoose.Schema({
   fermeture: {
     type: String,
   },
-
+  categorie: {
+    type: String,
+  },
   idCategorie: {
     type: Number,
     required: true,
@@ -66,5 +68,26 @@ userSchema.pre("save", async function(next) {
 
   next();
 })
+
+// Get all boutiques
+userSchema.statics.getAllBoutiques = async function() {
+  try {
+    return await this.find();
+  } catch (error) {
+    throw error;
+  }
+};
+
+// Get a boutique by its ID
+userSchema.statics.getByIdBoutique = async function(idBoutique) {
+  try {
+    return await this.findOne({ idboutique: idBoutique });
+  } catch (error) {
+    throw error;
+  }
+};
+
+const auditPlugin = require('../plugins/auditPlugin');
+userSchema.plugin(auditPlugin, { modelName: 'Boutique' });
 
 module.exports = mongoose.model('Boutique', userSchema);

@@ -6,23 +6,28 @@ const userSchema = new mongoose.Schema({
     idAvis: {
     type: String,
     unique: true,
-
+    sparse: true,
   },
   idboutique: {
     type: String,
-    required: true,
+  },
+  idProduit: {
+    type: String,
   },
   idAcheteur: {
     type: String,
-    required: true,
+  },
+  commentaire: {
+    type: String,
+  },
+  note: {
+    type: Number,
   },
   avis: {
     type: String,
-    required: true,
   },
   notation: {
     type: Number,
-    required: true,
   },
   date: {
     type: Date,

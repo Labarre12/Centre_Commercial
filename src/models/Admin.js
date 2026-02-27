@@ -17,6 +17,11 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
     enum: ['ADMIN', 'BOUTIQUE']
+  },
+  boutique: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Boutique',
+    default: null
   }
 }, {
   timestamps: true

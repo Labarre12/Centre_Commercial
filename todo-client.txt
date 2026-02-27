@@ -1,4 +1,4 @@
-client : 8
+client :
 
 Promotions disponibles 
 | Fonction                 | Méthode HTTP | URL                          | Description                         | Filtrage / Options                      |
@@ -21,13 +21,6 @@ Commande de produit
 | Détails commande | GET          | /api/commandes/:idCommande       | Détails d’une commande spécifique  | ID commande                                |
 | Annuler commande | DELETE       | /api/commandes/:idCommande       | Annuler une commande non livrée    | ID commande                                |
 
-**Résultat produit / recherche
-| Fonction                | Méthode HTTP | URL                                 | Description                           | Filtrage / Options                         |
-| ----------------------- | ------------ | ----------------------------------- | ------------------------------------- | ------------------------------------------ |
-| Rechercher produit      | GET          | /api/produits/search                | Chercher un produit par mot-clé       | Filtrer par nom, catégorie, prix, boutique |
-| Voir produit            | GET          | /api/produits/:idProduit            | Détails d’un produit                  | ID produit                                 |
-**| Liste produits boutique | GET          | /api/boutiques/:idBoutique/produits | Voir tous les produits d’une boutique | Filtrer par catégorie, promotion           |
-
 Avis client
 | Fonction       | Méthode HTTP | URL                           | Description                     | Filtrage / Options       |
 | -------------- | ------------ | ----------------------------- | ------------------------------- | ------------------------ |
@@ -36,12 +29,18 @@ Avis client
 | Modifier avis  | PUT          | /api/avis/:idAvis             | Modifier son avis existant      | Note, commentaire        |
 | Supprimer avis | DELETE       | /api/avis/:idAvis             | Supprimer son avis              | ID avis                  |
 
+
+
+---------------------
+
+
 Agenda / horaires et promotions à venir
 | Fonction                     | Méthode HTTP | URL                                | Description                             | Filtrage / Options                      |
 | ---------------------------- | ------------ | ---------------------------------- | --------------------------------------- | --------------------------------------- |
 | Voir agenda boutiques        | GET          | /api/boutiques/agenda              | Voir horaires d’ouverture et fermetures | Filtrer par date, boutique              |
 | Voir promotions à venir      | GET          | /api/promotions/upcoming           | Promotions à venir ou actives           | Filtrer par boutique, type de réduction |
 | Voir horaires d’une boutique | GET          | /api/boutiques/:idBoutique/horaire | Détail des horaires d’une boutique      | Par jour, ouverture/fermeture           |
+xxxxx
 
 Profil client :
 | Fonction         | Méthode HTTP | URL                    | Description                         | Filtrage / Options             |

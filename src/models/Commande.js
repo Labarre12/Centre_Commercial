@@ -2,8 +2,8 @@ const mongoose = require('mongoose');
 const Counter = require('./Counter');
 
 
-const userSchema = new mongoose.Schema({
-    idcommande: {
+const commandeSchema = new mongoose.Schema({
+  idcommande: {
     type: String,
     unique: true,
   },
@@ -12,24 +12,30 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-
-  idproduit: {
+  idboutique: {
     type: String,
     required: true,
-    unique: true,
   },
-
+  produits: [
+    {
+      idproduit: { type: String, required: true },
+      quantite: { type: Number, required: true },
+    }
+  ],
   idAcheteur: {
     type: String,
     required: true,
   },
-  
+
   idstatus: {
     type: String,
     required: true,
-  }
+  },
+  adresseLivraison: {
+    type: String,
+  },
 }, {
-  timestamps: true
+  timestamps: true,
 });
 
 userSchema.pre("save", async function(next) {
@@ -48,3 +54,4 @@ userSchema.pre("save", async function(next) {
 })
 
 module.exports = mongoose.model('Commande', userSchema);
+module.exports = mongoose.model('Commande', commandeSchema);
