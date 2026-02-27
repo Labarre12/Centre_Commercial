@@ -12,7 +12,7 @@ const promotionRoutes = require('./routes/promotionRoutes');
 const venteRoutes = require('./routes/venteRoutes');
 const employeRoutes = require('./routes/employeRoutes');
 const commandeRoutes = require('./routes/commandeRoutes');
-const clientRoutes = require('./routes/clientRoutes');
+const clientRoutes = require('./routes/client/clientRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -37,12 +37,9 @@ app.use('/api/promotions', promotionRoutes);
 app.use('/api/ventes', venteRoutes);
 app.use('/api/employes', employeRoutes);
 app.use('/api/commandes', commandeRoutes);
-app.use('/api/clients', clientRoutes);
 
-// Route de base
-app.get('/', (req, res) => {
-  res.json({ message: 'Bienvenue sur l\'API' });
-});
+// Routes client (montées en dernier pour ne pas écraser les routes boutique)
+app.use('/api', clientRoutes);
 
 // Démarrage du serveur
 app.listen(PORT, () => {

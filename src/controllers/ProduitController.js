@@ -1,5 +1,16 @@
 const Produit = require('../models/Produit');
 
+// Obtenir tous les produits (shuffle aléatoire, limite 12)
+exports.getAllProduits = async (req, res) => {
+  try {
+    const limit = parseInt(req.query.limit) || 12;
+    const produits = await Produit.aggregate([{ $sample: { size: limit } }]);
+    res.status(200).json(produits);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 // Insérer un produit (route générique)
 exports.insertProduit = async (req, res) => {
   try {

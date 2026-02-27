@@ -1,52 +1,46 @@
 const mongoose = require('mongoose');
 
-const userSchema = new mongoose.Schema({
+const promotionSchema = new mongoose.Schema({
   titre: {
     type: String,
     required: true,
-    trim: true
+    trim: true,
   },
   description: {
     type: String,
-    required: false
   },
   idBoutiques: {
-    type: [String], 
+    type: [String],
     required: true,
-    default: []
+    default: [],
   },
   idProduits: {
-    type: [String], 
-    required: false,
-    default: []
+    type: [String],
+    default: [],
   },
   typeReduction: {
     type: String,
-    enum: ['pourcentage', 'montant'], 
-    required: true
+    enum: ['pourcentage', 'montant'],
+    required: true,
   },
   valeur: {
-    type: Number, 
-    required: true
+    type: Number,
+    required: true,
   },
   dateDebut: {
     type: Date,
-    required: true
+    required: true,
   },
   dateFin: {
     type: Date,
-    required: true
+    required: true,
   },
   actif: {
     type: Boolean,
-    default: true
-  }
+    default: true,
+  },
 }, {
-  timestamps: true
+  timestamps: true,
 });
 
-
-const auditPlugin = require('../plugins/auditPlugin');
-userSchema.plugin(auditPlugin, { modelName: 'Promotion' });
-
-module.exports = mongoose.model('Promotion', userSchema);
+module.exports = mongoose.model('Promotion', promotionSchema);

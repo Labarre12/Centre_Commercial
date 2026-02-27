@@ -2,6 +2,55 @@ const Boutique = require('../models/Boutique');
 const Vente = require('../models/Vente');
 const Acheteur = require('../models/Acheteur');
 
+// Toutes les boutiques avec statut ouvert/fermé calculé en temps réel
+exports.getBoutiquesWithStatus = async (req, res) => {
+  try {
+    const now = new Date();
+    const hh = String(now.getHours()).padStart(2, '0');
+    const mm = String(now.getMinutes()).padStart(2, '0');
+    const currentTime = `${hh}:${mm}`;
+
+    const boutiques = await Boutique.find();
+    const result = boutiques.map(b => {
+      const isOpen =
+        !!b.ouverture &&
+        b.ouverture <= currentTime &&
+        (!b.fermeture || b.fermeture === '' || b.fermeture >= currentTime);
+      return { ...b.toObject(), isOpen };
+    });
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// Obtenir les boutiques ouvertes maintenant
+exports.getBoutiquesOuvertes = async (req, res) => {
+  try {
+    const now = new Date();
+    const hh = String(now.getHours()).padStart(2, '0');
+    const mm = String(now.getMinutes()).padStart(2, '0');
+    const currentTime = `${hh}:${mm}`;
+    const boutiques = await Boutique.find({
+      ouverture: { $lte: currentTime },
+      $or: [{ fermeture: { $gte: currentTime } }, { fermeture: null }, { fermeture: '' }]
+    });
+    res.status(200).json(boutiques);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// Obtenir les boutiques du foodcourt
+exports.getBoutiquesFoodcourt = async (req, res) => {
+  try {
+    const boutiques = await Boutique.find({ categorie: { $in: ['Restaurant', 'Café', 'Fast Food', 'Restauration'] } });
+    res.status(200).json(boutiques);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 // Obtenir toutes les boutiques
 exports.getAllBoutiques = async (req, res) => {
   try {

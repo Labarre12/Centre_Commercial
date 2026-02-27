@@ -27,12 +27,12 @@ const commandeSchema = new mongoose.Schema({
   idstatus: {
     type: String,
     required: true,
-  }
+  },
+  adresseLivraison: {
+    type: String,
+  },
 }, {
-  timestamps: true
+  timestamps: true,
 });
-
-const auditPlugin = require('../plugins/auditPlugin');
-commandeSchema.plugin(auditPlugin, { modelName: 'Commande' });
 
 module.exports = mongoose.model('Commande', commandeSchema);

@@ -29,7 +29,12 @@ const userSchema = new mongoose.Schema({
   idLiaisonCouleur: {
     type: String,
     required: true,
-  }
+  },
+  prix: { type: Number },
+  prixOriginal: { type: Number },
+  categorie: { type: String },
+  stock: { type: Number, default: 0 },
+  couleur: { type: String }
 }, {
   timestamps: true
 });

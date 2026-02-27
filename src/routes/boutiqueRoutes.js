@@ -7,9 +7,14 @@ const promotionController = require('../controllers/PromotionController');
 const venteController = require('../controllers/VenteController');
 const employeController = require('../controllers/EmployeController');
 const commandeController = require('../controllers/CommandeController');
+const clientController   = require('../controllers/client/clientController');
 
 // Profil boutique
 router.get('/', boutiqueController.getAllBoutiques);
+router.get('/open', boutiqueController.getBoutiquesOuvertes);
+router.get('/foodcourt', boutiqueController.getBoutiquesFoodcourt);
+router.get('/agenda', clientController.getAgendaBoutiques);
+router.get('/plan', boutiqueController.getBoutiquesWithStatus);
 router.get('/:idBoutique', boutiqueController.getByIdBoutique);
 router.put('/:idBoutique', boutiqueController.updateBoutique);
 
