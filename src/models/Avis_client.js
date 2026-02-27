@@ -1,33 +1,55 @@
 const mongoose = require('mongoose');
+const Counter = require('./Counter');
+
 
 const userSchema = new mongoose.Schema({
     idAvis: {
     type: String,
-    required: true,
     unique: true,
+    sparse: true,
   },
   idboutique: {
     type: String,
-    required: true,
+  },
+  idProduit: {
+    type: String,
   },
   idAcheteur: {
     type: String,
-    required: true,
+  },
+  commentaire: {
+    type: String,
+  },
+  note: {
+    type: Number,
   },
   avis: {
     type: String,
-    required: true,
   },
   notation: {
     type: Number,
-    required: true,
   },
   date: {
     type: Date,
-    required: true,
+    default: Date.now,
   }
 }, {
   timestamps: true
 });
+
+userSchema.pre("save", async function() {
+  if (!this.idAvis) {
+
+    const counter = await Counter.findOneAndUpdate(
+      { name: "avis_client" },
+      { $inc: { seq: 1 } },
+      { new: true, upsert: true }
+    );
+
+    this.idAvis = "AVIS" + counter.seq.toString().padStart(3, "0");
+  }
+
+})
+
 
 module.exports = mongoose.model('Avis_client', userSchema);

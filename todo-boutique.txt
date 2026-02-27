@@ -1,4 +1,4 @@
-boutique :
+boutique : 8
 
 gestion de produit :
 | Fonction             | Méthode HTTP | URL                                 | Description                                 | Filtrage / Options                               |
