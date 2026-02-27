@@ -5,6 +5,9 @@ const produitController = require('../controllers/ProduitController');
 // Insérer un nouveau produit
 router.post('/', produitController.insertProduit);
 
+// Obtenir tous les produits (avec limite optionnelle)
+router.get('/', produitController.getAllProduits);
+
 // Obtenir tous les produits d'une boutique
 router.get('/boutique/:idBoutique', produitController.getListProduit);
 
