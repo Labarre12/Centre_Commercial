@@ -4,7 +4,7 @@ const Boutique = require('../../models/Boutique');
 exports.getBoutiquesFoodcourt = async (req, res) => {
   try {
     const { ouverture, fermeture, idCategorie } = req.query;
-    let filter = { libelle: /foodcourt/i }; // filtrage approximatif sur nom contenant "foodcourt"
+    let filter = { categorie: { $in: ['Restaurant', 'Café', 'Fast Food', 'Restauration'] } };
 
     if (ouverture) filter.ouverture = { $lte: ouverture };
     if (fermeture) filter.fermeture = { $gte: fermeture };

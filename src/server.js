@@ -3,6 +3,8 @@ const cors = require('cors');
 require('dotenv').config();
 const connectDB = require('./config/database');
 
+//appel dossier routes
+
 const authRoutes = require('./routes/authRoutes');
 const userRoutes = require('./routes/userRoutes');
 const produitRoutes = require('./routes/produitRoutes');
@@ -13,6 +15,15 @@ const venteRoutes = require('./routes/venteRoutes');
 const employeRoutes = require('./routes/employeRoutes');
 const commandeRoutes = require('./routes/commandeRoutes');
 const clientRoutes = require('./routes/client/clientRoutes');
+
+// routes dossier admins
+const adminAuthRoutes = require('./routes/admin/authRoutes');
+const adminBoutiqueRoutes = require('./routes/admin/boutiqueRoutes');
+const dashboardRoutes = require('./routes/admin/dashboardRoutes');
+const evenementRoutes = require('./routes/admin/evenementRoutes');
+const boxRoutes = require('./routes/admin/boxRoutes');
+const parkingRoutes = require('./routes/admin/parkingRoutes');
+
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -38,6 +49,18 @@ app.use('/api/ventes', venteRoutes);
 app.use('/api/employes', employeRoutes);
 app.use('/api/commandes', commandeRoutes);
 
+app.use('/api/admin/auth', adminAuthRoutes);
+app.use('/api/admin/boutique', adminBoutiqueRoutes);
+app.use('/api/admin/dashboard', dashboardRoutes);
+app.use('/api/admin/evenement', evenementRoutes);
+app.use('/api/admin/box', boxRoutes);
+app.use('/api/admin/parking', parkingRoutes);
+
+
+// Route de base
+app.get('/', (req, res) => {
+  res.json({ message: 'Bienvenue sur l\'API' });
+});
 // Routes client (montées en dernier pour ne pas écraser les routes boutique)
 app.use('/api', clientRoutes);
 

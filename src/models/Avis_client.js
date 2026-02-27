@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const Counter = require('./Counter');
+
 
 const userSchema = new mongoose.Schema({
     idAvis: {
@@ -34,5 +36,20 @@ const userSchema = new mongoose.Schema({
 }, {
   timestamps: true
 });
+
+userSchema.pre("save", async function() {
+  if (!this.idAvis) {
+
+    const counter = await Counter.findOneAndUpdate(
+      { name: "avis_client" },
+      { $inc: { seq: 1 } },
+      { new: true, upsert: true }
+    );
+
+    this.idAvis = "AVIS" + counter.seq.toString().padStart(3, "0");
+  }
+
+})
+
 
 module.exports = mongoose.model('Avis_client', userSchema);

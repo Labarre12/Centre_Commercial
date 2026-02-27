@@ -25,11 +25,12 @@ const Evenement      = require('./src/models/Evenement');
 const Status         = require('./src/models/Status');
 const Couleur        = require('./src/models/Couleur');
 const CategorieProduit = require('./src/models/Categorie_produit');
-const Emplacement    = require('./src/models/Emplacement');
-const Parking        = require('./src/models/Parking');
-const PlaceParking   = require('./src/models/PlaceParking');
-const LiaisonCouleur = require('./src/models/Liaison_Couleur_Produit');
-const Participation  = require('./src/models/Participation_boutique');
+const Emplacement        = require('./src/models/Emplacement');
+const Parking            = require('./src/models/Parking');
+const PlaceParking       = require('./src/models/PlaceParking');
+const ReservationParking = require('./src/models/Reservation_parking');
+const LiaisonCouleur     = require('./src/models/Liaison_Couleur_Produit');
+const Participation      = require('./src/models/Participation_boutique');
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 const today   = new Date();
@@ -53,7 +54,7 @@ async function main() {
     Admin, Acheteur, Boutique, Produit, Employe,
     Commande, Vente, AvisClient, Promotion, Loyer,
     Evenement, Status, Couleur, CategorieProduit,
-    Emplacement, Parking, PlaceParking, LiaisonCouleur, Participation
+    Emplacement, Parking, PlaceParking, ReservationParking, LiaisonCouleur, Participation
   );
 
   // ── 2. Statuts ────────────────────────────────────────────────────────────
@@ -100,14 +101,16 @@ async function main() {
   // ── 5. Emplacements ───────────────────────────────────────────────────────
   console.log('📍  Emplacements…');
   await Emplacement.insertMany([
-    { idEmplacement: 'EMP001', numéro: 'N0-A1' },
-    { idEmplacement: 'EMP002', numéro: 'N0-A2' },
-    { idEmplacement: 'EMP003', numéro: 'N0-B1' },
-    { idEmplacement: 'EMP004', numéro: 'N1-A1' },
-    { idEmplacement: 'EMP005', numéro: 'N1-A2' },
-    { idEmplacement: 'EMP006', numéro: 'N1-B1' },
-    { idEmplacement: 'EMP007', numéro: 'N2-FC1' },
-    { idEmplacement: 'EMP008', numéro: 'N2-FC2' },
+    { idEmplacement: 'EMP001', numero: 'N0-A1',  zone: 'Niveau 0 — Aile A', disponible: false },
+    { idEmplacement: 'EMP002', numero: 'N0-A2',  zone: 'Niveau 0 — Aile A', disponible: false },
+    { idEmplacement: 'EMP003', numero: 'N0-B1',  zone: 'Niveau 0 — Aile B', disponible: true  },
+    { idEmplacement: 'EMP004', numero: 'N1-A1',  zone: 'Niveau 1 — Aile A', disponible: false },
+    { idEmplacement: 'EMP005', numero: 'N1-A2',  zone: 'Niveau 1 — Aile A', disponible: false },
+    { idEmplacement: 'EMP006', numero: 'N1-B1',  zone: 'Niveau 1 — Aile B', disponible: true  },
+    { idEmplacement: 'EMP007', numero: 'N2-FC1', zone: 'Niveau 2 — FoodCourt', disponible: false },
+    { idEmplacement: 'EMP008', numero: 'N2-FC2', zone: 'Niveau 2 — FoodCourt', disponible: true  },
+    { idEmplacement: 'EMP009', numero: 'N0-C1',  zone: 'Niveau 0 — Aile C', disponible: true  },
+    { idEmplacement: 'EMP010', numero: 'N1-C1',  zone: 'Niveau 1 — Aile C', disponible: true  },
   ]);
 
   // ── 6. Parkings ───────────────────────────────────────────────────────────
@@ -531,10 +534,10 @@ async function main() {
     { idLoyer:'LOY001', idboutique:'BTQ001', mois, annee, montant:450000,  datePaiement: new Date(), idStatus:'STA006' },
     { idLoyer:'LOY002', idboutique:'BTQ002', mois, annee, montant:680000,  datePaiement: new Date(), idStatus:'STA006' },
     { idLoyer:'LOY003', idboutique:'BTQ003', mois, annee, montant:520000,  datePaiement: new Date(), idStatus:'STA006' },
-    { idLoyer:'LOY004', idboutique:'BTQ004', mois, annee, montant:390000,  datePaiement: new Date(), idStatus:'STA007' },
+    { idLoyer:'LOY004', idboutique:'BTQ004', mois, annee, montant:390000,  datePaiement: d(annee, mois > 1 ? mois-1 : 12, 1), idStatus:'STA007' },
     { idLoyer:'LOY005', idboutique:'BTQ005', mois, annee, montant:430000,  datePaiement: new Date(), idStatus:'STA006' },
     { idLoyer:'LOY006', idboutique:'BTQ006', mois, annee, montant:250000,  datePaiement: new Date(), idStatus:'STA006' },
-    { idLoyer:'LOY007', idboutique:'BTQ007', mois, annee, montant:180000,  datePaiement: new Date(), idStatus:'STA007' },
+    { idLoyer:'LOY007', idboutique:'BTQ007', mois, annee, montant:180000,  datePaiement: d(annee, mois > 1 ? mois-1 : 12, 1), idStatus:'STA007' },
     { idLoyer:'LOY008', idboutique:'BTQ008', mois, annee, montant:310000,  datePaiement: new Date(), idStatus:'STA006' },
     // Mois précédents pour historique
     { idLoyer:'LOY009', idboutique:'BTQ001', mois: mois > 1 ? mois-1 : 12, annee: mois > 1 ? annee : annee-1, montant:450000, datePaiement: d(annee, mois > 1 ? mois-1 : 12, 5), idStatus:'STA006' },
@@ -561,6 +564,17 @@ async function main() {
   [true,true,false,true].forEach((d, i) =>
     parkingSpots.push({ numero:`PMR${i+1}`, secteur:'PMR', type:'PMR', disponible: d }));
   await PlaceParking.insertMany(parkingSpots);
+
+  // ── Réservations parking ────────────────────────────────────────────────
+  console.log('🚗  Réservations parking…');
+  await ReservationParking.insertMany([
+    { idReservationP: 'RPARK001', idparking: 'PARK001', reservateur: 'ACH001', idStatus: 'CONFIRME' },
+    { idReservationP: 'RPARK002', idparking: 'PARK001', reservateur: 'ACH002', idStatus: 'CONFIRME' },
+    { idReservationP: 'RPARK003', idparking: 'PARK002', reservateur: 'ACH003', idStatus: 'EN_ATTENTE' },
+    { idReservationP: 'RPARK004', idparking: 'PARK002', reservateur: 'ACH004', idStatus: 'CONFIRME' },
+    { idReservationP: 'RPARK005', idparking: 'PARK003', reservateur: 'ACH005', idStatus: 'ANNULE' },
+    { idReservationP: 'RPARK006', idparking: 'PARK001', reservateur: 'ACH003', idStatus: 'EN_ATTENTE' },
+  ]);
 
   // ── Résumé ─────────────────────────────────────────────────────────────────
   console.log('\n✅  Seed terminé avec succès !\n');

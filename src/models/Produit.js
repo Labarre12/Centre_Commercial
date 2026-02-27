@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
+const Counter = require('./Counter');
 
 const userSchema = new mongoose.Schema({
   idProduit: {
     type: String,
-    required: true,
     unique: true,
   },
   libelle: {
@@ -38,6 +38,20 @@ const userSchema = new mongoose.Schema({
 }, {
   timestamps: true
 });
+
+userSchema.pre("save", async function() {
+  if (!this.idProduit) {
+
+    const counter = await Counter.findOneAndUpdate(
+      { name: "produit" },
+      { $inc: { seq: 1 } },
+      { new: true, upsert: true }
+    );
+
+    this.idProduit = "PROD" + counter.seq.toString().padStart(3, "0");
+  }
+
+})
 
 // Insert a new product
 userSchema.statics.insertProduit = async function(data) {

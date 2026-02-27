@@ -1,4 +1,5 @@
 const Acheteur = require('../../models/Acheteur');
+const bcrypt = require('bcrypt');
 
 // Voir profil client
 exports.getProfilClient = async (req, res) => {
@@ -29,7 +30,7 @@ exports.updateProfilClient = async (req, res) => {
     if (mail) client.mail = mail;
     if (contact) client.contact = contact;
     if (adresse) client.adresse = adresse;
-    if (mdp) client.mdp = mdp; // ici tu peux ajouter un hash si nécessaire
+    if (mdp) client.mdp = await bcrypt.hash(mdp, 10);
 
     await client.save();
 

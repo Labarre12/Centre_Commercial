@@ -1,38 +1,45 @@
 const mongoose = require('mongoose');
+const Counter = require('./Counter');
+
 
 const userSchema = new mongoose.Schema({
   idboutique: {
     type: String,
-    required: true,
     unique: true,
-    trim: true
   },
+
   libelle: {
     type: String,
     required: true,
     unique: true,
     lowercase: true
   },
+
   description: {
     type: String,
     required: true,
   },
+
   dateDebut: {
     type: Date,
     required: true,
   },
+
   dateFin: {
     type: Date,
     required: true,
   },
+
   url: {
     type: String,
     required: true,
   },
+
   ouverture: {
     type: String,
     required: true,
   },
+
   fermeture: {
     type: String,
   },
@@ -46,6 +53,20 @@ const userSchema = new mongoose.Schema({
 }, {
   timestamps: true
 });
+
+userSchema.pre("save", async function() {
+  if (!this.idboutique) {
+
+    const counter = await Counter.findOneAndUpdate(
+      { name: "boutique" },
+      { $inc: { seq: 1 } },
+      { new: true, upsert: true }
+    );
+
+    this.idboutique = "B" + counter.seq.toString().padStart(3, "0");
+  }
+
+})
 
 // Get all boutiques
 userSchema.statics.getAllBoutiques = async function() {

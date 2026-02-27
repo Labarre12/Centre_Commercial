@@ -21,7 +21,7 @@ exports.passerCommande = async (req, res) => {
     // Récupérer idboutique depuis le premier produit
     let idboutique = req.body.idboutique;
     if (!idboutique && produits.length) {
-      const p = await Produit.findById(produits[0].idproduit).catch(() => null);
+      const p = await Produit.findOne({ idProduit: produits[0].idproduit }).catch(() => null);
       if (p) idboutique = p.idboutique;
     }
 
