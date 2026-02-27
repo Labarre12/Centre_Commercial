@@ -14,6 +14,7 @@ router.get('/', boutiqueController.getAllBoutiques);
 router.get('/open', boutiqueController.getBoutiquesOuvertes);
 router.get('/foodcourt', boutiqueController.getBoutiquesFoodcourt);
 router.get('/agenda', clientController.getAgendaBoutiques);
+router.get('/plan', boutiqueController.getBoutiquesWithStatus);
 router.get('/:idBoutique', boutiqueController.getByIdBoutique);
 router.put('/:idBoutique', boutiqueController.updateBoutique);
 

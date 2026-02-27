@@ -7,6 +7,11 @@ const promotionClientController = require('../../controllers/client/promotionCli
 const boutiqueClientController = require('../../controllers/client/boutiqueClientController');
 const commandeClientController = require('../../controllers/client/commandeClientController');
 const avisClientController = require('../../controllers/client/avisClientController');
+const parkingController = require('../../controllers/client/parkingController');
+
+// Parking
+router.get('/parking/stats', parkingController.getParkingStats);
+router.get('/parking', parkingController.getParking);
 
 // Agenda / horaires
 router.get('/boutiques/agenda', clientController.getAgendaBoutiques);

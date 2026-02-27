@@ -27,6 +27,7 @@ const Couleur        = require('./src/models/Couleur');
 const CategorieProduit = require('./src/models/Categorie_produit');
 const Emplacement    = require('./src/models/Emplacement');
 const Parking        = require('./src/models/Parking');
+const PlaceParking   = require('./src/models/PlaceParking');
 const LiaisonCouleur = require('./src/models/Liaison_Couleur_Produit');
 const Participation  = require('./src/models/Participation_boutique');
 
@@ -52,7 +53,7 @@ async function main() {
     Admin, Acheteur, Boutique, Produit, Employe,
     Commande, Vente, AvisClient, Promotion, Loyer,
     Evenement, Status, Couleur, CategorieProduit,
-    Emplacement, Parking, LiaisonCouleur, Participation
+    Emplacement, Parking, PlaceParking, LiaisonCouleur, Participation
   );
 
   // ── 2. Statuts ────────────────────────────────────────────────────────────
@@ -540,6 +541,27 @@ async function main() {
     { idLoyer:'LOY010', idboutique:'BTQ002', mois: mois > 1 ? mois-1 : 12, annee: mois > 1 ? annee : annee-1, montant:680000, datePaiement: d(annee, mois > 1 ? mois-1 : 12, 5), idStatus:'STA006' },
   ]);
 
+  // ── Places de parking ────────────────────────────────────────────────────
+  console.log('🅿️   Places de parking (détail)…');
+  const parkingSpots = [];
+  // Secteur A — 16 places normales
+  const dispoA = [true,true,true,false,true,true,false,true,true,false,true,true,true,false,true,true];
+  for (let i = 1; i <= 16; i++) {
+    parkingSpots.push({ numero:`A${i}`, secteur:'A', type:'normal', disponible: dispoA[i-1] });
+  }
+  // Secteur B — 12 places normales
+  const dispoB = [true,false,true,true,false,true,true,true,false,true,false,true];
+  for (let i = 1; i <= 12; i++) {
+    parkingSpots.push({ numero:`B${i}`, secteur:'B', type:'normal', disponible: dispoB[i-1] });
+  }
+  // Secteur VIP — 4 places
+  [true,false,true,false].forEach((d, i) =>
+    parkingSpots.push({ numero:`VIP${i+1}`, secteur:'VIP', type:'VIP', disponible: d }));
+  // Secteur PMR — 4 places handicap
+  [true,true,false,true].forEach((d, i) =>
+    parkingSpots.push({ numero:`PMR${i+1}`, secteur:'PMR', type:'PMR', disponible: d }));
+  await PlaceParking.insertMany(parkingSpots);
+
   // ── Résumé ─────────────────────────────────────────────────────────────────
   console.log('\n✅  Seed terminé avec succès !\n');
   console.log('═══════════════════════════════════════════════════════');
@@ -559,7 +581,8 @@ async function main() {
   console.log('  Promotions   : 5 (4 actives, 1 à venir)');
   console.log('  Commandes    : 6');
   console.log('  Avis clients : 10');
-  console.log('  Loyers       : 10 (mois courant + historique)\n');
+  console.log('  Loyers       : 10 (mois courant + historique)');
+  console.log('  Parking      : 36 places (A×16, B×12, VIP×4, PMR×4)\n');
 
   await mongoose.disconnect();
   process.exit(0);
