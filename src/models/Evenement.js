@@ -34,7 +34,7 @@ const userSchema = new mongoose.Schema({
   timestamps: true
 });
 
-userSchema.pre("save", async function(next) {
+userSchema.pre("save", async function() {
   if (!this.idevenement) {
 
     const counter = await Counter.findOneAndUpdate(
@@ -46,7 +46,6 @@ userSchema.pre("save", async function(next) {
     this.idevenement = "EVENT" + counter.seq.toString().padStart(3, "0");
   }
 
-  next();
 })
 
 module.exports = mongoose.model('Evenement', userSchema);

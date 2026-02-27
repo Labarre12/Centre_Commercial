@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const dashboard = require('../controllers/admin/dashboardController');
+const dashboard = require('../../controllers/admin/dashboardRoutes');
 
 // Clients
 router.get('/clients/count', dashboard.getTotalClients);

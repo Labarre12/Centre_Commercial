@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const controller = require('../controllers/admin/boutiqueController');
+const controller = require('../../controllers/admin/boutiqueController');
 
 router.post('/', controller.createBoutique);
 router.get('/', controller.getAllBoutiques);

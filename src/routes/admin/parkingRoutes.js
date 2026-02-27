@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const controller = require('../controllers/admin/parkingController');
+const controller = require('../../controllers/admin/parkingController');
 
 router.post('/reservations', controller.createReservation);         // Réserver un parking
 router.get('/reservations', controller.getAllReservations);         // Lister toutes les réservations

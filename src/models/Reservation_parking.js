@@ -23,7 +23,7 @@ const userSchema = new mongoose.Schema({
   timestamps: true
 });
 
-userSchema.pre("save", async function(next) {
+userSchema.pre("save", async function() {
   if (!this.idReservationP) {
 
     const counter = await Counter.findOneAndUpdate(
@@ -35,7 +35,6 @@ userSchema.pre("save", async function(next) {
     this.idReservationP = "RPARK" + counter.seq.toString().padStart(3, "0");
   }
 
-  next();
 })
 
 module.exports = mongoose.model('Reservation_parking', userSchema);

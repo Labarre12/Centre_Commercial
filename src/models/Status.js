@@ -14,7 +14,7 @@ const userSchema = new mongoose.Schema({
   timestamps: true
 });
 
-userSchema.pre("save", async function(next) {
+userSchema.pre("save", async function() {
   if (!this.idstatus) {
 
     const counter = await Counter.findOneAndUpdate(
@@ -26,7 +26,6 @@ userSchema.pre("save", async function(next) {
     this.idstatus = "STAT" + counter.seq.toString().padStart(3, "0");
   }
 
-  next();
 })
 
 

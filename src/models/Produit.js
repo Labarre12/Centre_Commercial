@@ -39,7 +39,7 @@ const userSchema = new mongoose.Schema({
   timestamps: true
 });
 
-userSchema.pre("save", async function(next) {
+userSchema.pre("save", async function() {
   if (!this.idProduit) {
 
     const counter = await Counter.findOneAndUpdate(
@@ -51,7 +51,6 @@ userSchema.pre("save", async function(next) {
     this.idProduit = "PROD" + counter.seq.toString().padStart(3, "0");
   }
 
-  next();
 })
 
 // Insert a new product

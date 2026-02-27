@@ -17,8 +17,8 @@ const commandeRoutes = require('./routes/commandeRoutes');
 const clientRoutes = require('./routes/client/clientRoutes');
 
 // routes dossier admins
-const authRoutes = require('./routes/admin/authRoutes');
-const boutiqueRoutes = require('./routes/admin/boutiqueRoutes');
+const adminAuthRoutes = require('./routes/admin/authRoutes');
+const adminBoutiqueRoutes = require('./routes/admin/boutiqueRoutes');
 const dashboardRoutes = require('./routes/admin/dashboardRoutes');
 const evenementRoutes = require('./routes/admin/evenementRoutes');
 const boxRoutes = require('./routes/admin/boxRoutes');
@@ -49,12 +49,12 @@ app.use('/api/ventes', venteRoutes);
 app.use('/api/employes', employeRoutes);
 app.use('/api/commandes', commandeRoutes);
 
-app.use('/api/auth', authRoutes);
-app.use('/api/boutique', boutiqueRoutes);
-app.use('api/dashboard', dashboardRoutes);
-app.use('api/evenement', evenementRoutes);
-app.use('api/box', boxRoutes);
-app.use('api/parking', parkingRoutes);
+app.use('/api/admin/auth', adminAuthRoutes);
+app.use('/api/admin/boutique', adminBoutiqueRoutes);
+app.use('/api/admin/dashboard', dashboardRoutes);
+app.use('/api/admin/evenement', evenementRoutes);
+app.use('/api/admin/box', boxRoutes);
+app.use('/api/admin/parking', parkingRoutes);
 
 
 // Route de base

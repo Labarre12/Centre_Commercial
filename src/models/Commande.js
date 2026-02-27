@@ -38,20 +38,15 @@ const commandeSchema = new mongoose.Schema({
   timestamps: true,
 });
 
-userSchema.pre("save", async function(next) {
+commandeSchema.pre("save", async function() {
   if (!this.idcommande) {
-
     const counter = await Counter.findOneAndUpdate(
       { name: "commande" },
       { $inc: { seq: 1 } },
       { new: true, upsert: true }
     );
-
     this.idcommande = "CMD" + counter.seq.toString().padStart(3, "0");
   }
-
-  next();
 })
 
-module.exports = mongoose.model('Commande', userSchema);
 module.exports = mongoose.model('Commande', commandeSchema);

@@ -14,7 +14,7 @@ const userSchema = new mongoose.Schema({
   timestamps: true
 });
 
-userSchema.pre("save", async function(next) {
+userSchema.pre("save", async function() {
   if (!this.idCategorieProduit) {
 
     const counter = await Counter.findOneAndUpdate(
@@ -26,7 +26,6 @@ userSchema.pre("save", async function(next) {
     this.idCategorieProduit = "CP" + counter.seq.toString().padStart(3, "0");
   }
 
-  next();
 })
 
 module.exports = mongoose.model('Categorie_produit', userSchema);

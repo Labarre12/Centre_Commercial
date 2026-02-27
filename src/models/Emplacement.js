@@ -16,7 +16,7 @@ const userSchema = new mongoose.Schema({
   timestamps: true
 });
 
-userSchema.pre("save", async function(next) {
+userSchema.pre("save", async function() {
   if (!this.idEmplacement) {
 
     const counter = await Counter.findOneAndUpdate(
@@ -28,7 +28,6 @@ userSchema.pre("save", async function(next) {
     this.idEmplacement = "BOX" + counter.seq.toString().padStart(3, "0");
   }
 
-  next();
 })
 
 module.exports = mongoose.model('Emplacement', userSchema);

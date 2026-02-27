@@ -19,7 +19,7 @@ const userSchema = new mongoose.Schema({
   timestamps: true
 });
 
-userSchema.pre("save", async function(next) {
+userSchema.pre("save", async function() {
   if (!this.idLBE) {
 
     const counter = await Counter.findOneAndUpdate(
@@ -31,7 +31,6 @@ userSchema.pre("save", async function(next) {
     this.idLBE = "LBE" + counter.seq.toString().padStart(3, "0");
   }
 
-  next();
 })
 
 module.exports = mongoose.model('Liaison_boutique_emplacement', userSchema);

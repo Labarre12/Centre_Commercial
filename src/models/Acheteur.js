@@ -35,7 +35,7 @@ const userSchema = new mongoose.Schema({
   timestamps: true
 });
 
-userSchema.pre("save", async function(next) {
+userSchema.pre("save", async function() {
   if (!this.idAcheteur) {
 
     const counter = await Counter.findOneAndUpdate(
@@ -47,7 +47,6 @@ userSchema.pre("save", async function(next) {
     this.idAcheteur = "ACHAT" + counter.seq.toString().padStart(3, "0");
   }
 
-  next();
 })
 
 module.exports = mongoose.model('Acheteur', userSchema);

@@ -18,7 +18,7 @@ const userSchema = new mongoose.Schema({
   timestamps: true
 });
 
-userSchema.pre("save", async function(next) {
+userSchema.pre("save", async function() {
   if (!this.idLiaisonCouleurP) {
 
     const counter = await Counter.findOneAndUpdate(
@@ -30,7 +30,6 @@ userSchema.pre("save", async function(next) {
     this.idLiaisonCouleurP = "LCP" + counter.seq.toString().padStart(3, "0");
   }
 
-  next();
 })
 
 module.exports = mongoose.model('Liaison_couleur_produit', userSchema);

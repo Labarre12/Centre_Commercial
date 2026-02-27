@@ -26,7 +26,7 @@ const userSchema = new mongoose.Schema({
   timestamps: true
 });
 
-userSchema.pre("save", async function(next) {
+userSchema.pre("save", async function() {
   if (!this.idreservation) {
 
     const counter = await Counter.findOneAndUpdate(
@@ -38,7 +38,6 @@ userSchema.pre("save", async function(next) {
     this.idreservation = "RESERV" + counter.seq.toString().padStart(3, "0");
   }
 
-  next();
 })
 
 module.exports = mongoose.model('Reservation_produit', userSchema);
