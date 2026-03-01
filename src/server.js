@@ -24,6 +24,8 @@ const evenementRoutes = require('./routes/admin/evenementRoutes');
 const boxRoutes = require('./routes/admin/boxRoutes');
 const parkingRoutes = require('./routes/admin/parkingRoutes');
 
+const commandePayerRoutes = require('./routes/commandePayer');
+
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -55,6 +57,8 @@ app.use('/api/admin/dashboard', dashboardRoutes);
 app.use('/api/admin/evenement', evenementRoutes);
 app.use('/api/admin/box', boxRoutes);
 app.use('/api/admin/parking', parkingRoutes);
+
+app.use('/api/commande-payer', commandePayerRoutes);
 
 
 // Route de base
