@@ -38,4 +38,6 @@ router.get('/clients/:idClient', profilController.getProfilClient);
 router.put('/clients/:idClient', profilController.updateProfilClient);
 router.delete('/clients/:idClient', profilController.deleteProfilClient);
 
+
+
 module.exports = router;
