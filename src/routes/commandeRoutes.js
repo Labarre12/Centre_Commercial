@@ -7,6 +7,6 @@ router.put('/:idCommande', commandeController.updateCommande);
 router.delete('/:idCommande', commandeController.deleteCommande);
 
 //commande et payer
-router.post("/:idBoutique/commander-payer", controller.commanderEtPayer);
+router.post("/:idBoutique/commander-payer", commandeController.commanderEtPayer);
 
 module.exports = router;
