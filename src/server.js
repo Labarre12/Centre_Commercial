@@ -40,6 +40,9 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+
+app.use('/api', clientRoutes);
+
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
@@ -65,8 +68,6 @@ app.use('/api/commande-payer', commandePayerRoutes);
 app.get('/', (req, res) => {
   res.json({ message: 'Bienvenue sur l\'API' });
 });
-// Routes client (montées en dernier pour ne pas écraser les routes boutique)
-app.use('/api', clientRoutes);
 
 // Démarrage du serveur
 app.listen(PORT, () => {
