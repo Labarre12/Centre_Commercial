@@ -73,3 +73,42 @@ exports.getVentesStats = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 };
+
+// Créer une nouvelle vente
+exports.createVente = async (req, res) => {
+  try {
+    const {
+      idVente,
+      idBoutique,
+      idAcheteur,
+      idProduit,
+      prix,
+      quantite
+    } = req.body;
+
+    // Vérification simple
+    if (!idBoutique || !idProduit || !prix || !quantite) {
+      return res.status(400).json({ message: "Champs obligatoires manquants" });
+    }
+
+    const nouvelleVente = new Vente({
+      idVente,
+      idBoutique,
+      idAcheteur,
+      idProduit,
+      prix,
+      quantite,
+      createdAt: new Date()
+    });
+
+    await nouvelleVente.save();
+
+    res.status(201).json({
+      message: "Vente créée avec succès",
+      vente: nouvelleVente
+    });
+
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};

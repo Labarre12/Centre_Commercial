@@ -1,4 +1,5 @@
 const Commande = require('../models/Commande');
+const Vente = require('../models/Vente');
 
 // Créer une commande
 exports.createCommande = async (req, res) => {
@@ -10,6 +11,8 @@ exports.createCommande = async (req, res) => {
     res.status(400).json({ message: error.message });
   }
 };
+
+
 
 // Lister les commandes d'une boutique
 exports.getCommandesByBoutique = async (req, res) => {
@@ -71,6 +74,50 @@ exports.deleteCommande = async (req, res) => {
       return res.status(404).json({ message: 'Commande non trouvée' });
     }
     res.status(200).json({ message: 'Commande annulée' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+//commander et payer
+exports.commanderEtPayer = async (req, res) => {
+  try {
+    const { idBoutique } = req.params;
+    const { idProduit, quantite, prix, idAcheteur, adresseLivraison } = req.body;
+
+    if (!idProduit || !quantite || !prix || !idAcheteur) {
+      return res.status(400).json({ message: "Champs manquants" });
+    }
+
+    // Création commande
+    const commande = new Commande({
+      numero_commande: "CMD-" + Date.now(),
+      idboutique: idBoutique,
+      produits: [{ idproduit: idProduit, quantite }],
+      idAcheteur,
+      idstatus: "PAYEE",
+      adresseLivraison
+    });
+
+    await commande.save();
+
+    // Création vente
+    const vente = new Vente({
+      idBoutique: idBoutique,
+      idProduit,
+      quantite,
+      prix,
+      idAcheteur
+    });
+
+    await vente.save();
+
+    res.status(201).json({
+      message: "Commande et paiement effectués avec succès",
+      commande,
+      vente
+    });
+
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
