@@ -81,12 +81,30 @@ exports.deleteCommande = async (req, res) => {
 
 //commander et payer
 exports.commanderEtPayer = async (req, res) => {
+  const debug = req.debug || { message: 'Pas de debug' };
+  
   try {
     const { idBoutique } = req.params;
     const { idProduit, quantite, prix, idAcheteur, adresseLivraison } = req.body;
 
-    if (!idProduit || !quantite || !prix || !idAcheteur) {
-      return res.status(400).json({ message: "Champs manquants" });
+    // Vérification des champs
+    const missingFields = [];
+    if (!idProduit) missingFields.push('idProduit');
+    if (!quantite) missingFields.push('quantite');
+    if (!prix) missingFields.push('prix');
+    if (!idAcheteur) missingFields.push('idAcheteur');
+
+    if (missingFields.length > 0) {
+      return res.status(400).json({ 
+        message: "Champs manquants",
+        missingFields,
+        debug: {
+          ...debug,
+          body: req.body,
+          params: req.params,
+          timestamp: new Date().toISOString()
+        }
+      });
     }
 
     // Création commande
@@ -115,10 +133,22 @@ exports.commanderEtPayer = async (req, res) => {
     res.status(201).json({
       message: "Commande et paiement effectués avec succès",
       commande,
-      vente
+      vente,
+      debug: {
+        ...debug,
+        timestamp: new Date().toISOString()
+      }
     });
 
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ 
+      message: error.message,
+      debug: {
+        ...debug,
+        error: error.toString(),
+        stack: error.stack,
+        timestamp: new Date().toISOString()
+      }
+    });
   }
 };

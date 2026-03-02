@@ -24,6 +24,8 @@ const evenementRoutes = require('./routes/admin/evenementRoutes');
 const boxRoutes = require('./routes/admin/boxRoutes');
 const parkingRoutes = require('./routes/admin/parkingRoutes');
 
+const commandePayerRoutes = require('./routes/commandePayer');
+
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -37,6 +39,9 @@ require('./models');
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+
+app.use('/api', clientRoutes);
 
 // Routes
 app.use('/api/auth', authRoutes);
@@ -56,13 +61,13 @@ app.use('/api/admin/evenement', evenementRoutes);
 app.use('/api/admin/box', boxRoutes);
 app.use('/api/admin/parking', parkingRoutes);
 
+app.use('/api/commande-payer', commandePayerRoutes);
+
 
 // Route de base
 app.get('/', (req, res) => {
   res.json({ message: 'Bienvenue sur l\'API' });
 });
-// Routes client (montées en dernier pour ne pas écraser les routes boutique)
-app.use('/api', clientRoutes);
 
 // Démarrage du serveur
 app.listen(PORT, () => {
