@@ -1,4 +1,5 @@
 const Commande = require('../models/Commande');
+const Vente = require('../models/Vente');
 
 // Créer une commande
 exports.createCommande = async (req, res) => {
@@ -10,6 +11,8 @@ exports.createCommande = async (req, res) => {
     res.status(400).json({ message: error.message });
   }
 };
+
+
 
 // Lister les commandes d'une boutique
 exports.getCommandesByBoutique = async (req, res) => {
@@ -76,7 +79,7 @@ exports.deleteCommande = async (req, res) => {
   }
 };
 
-// Commander et payer
+//commander et payer
 exports.commanderEtPayer = async (req, res) => {
   const debug = req.debug || { message: 'Pas de debug' };
   
