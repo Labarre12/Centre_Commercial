@@ -205,7 +205,7 @@ exports.updateStatut = async (req, res) => {
     await commande.save();
 
     let ventes = [];
-    if (ancienStatus !== 'PAYEE' && idstatus === 'PAYEE') {
+    if (ancienStatus !== 'Payé' && idstatus === 'Payé') {
       for (const item of commande.produits) {
         let prix = 0;
         try {
@@ -225,7 +225,7 @@ exports.updateStatut = async (req, res) => {
     }
 
     // Mettre le statut à CONFIRME à la fin
-    commande.idstatus = 'CONFIRME';
+    commande.idstatus = 'Confirmé';
     await commande.save();
 
     res.status(200).json({ commande, ventes });
