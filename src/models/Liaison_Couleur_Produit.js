@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
+const Counter = require('./Counter');
 
 const userSchema = new mongoose.Schema({
-    idLiaisonCouleur: {
+    idLiaisonCouleurP: {
     type: String,
-    required: true,
     unique: true,
   },
   idcouleur: {
@@ -17,5 +17,19 @@ const userSchema = new mongoose.Schema({
 }, {
   timestamps: true
 });
+
+userSchema.pre("save", async function() {
+  if (!this.idLiaisonCouleurP) {
+
+    const counter = await Counter.findOneAndUpdate(
+      { name: "liaison_couleur_p" },
+      { $inc: { seq: 1 } },
+      { new: true, upsert: true }
+    );
+
+    this.idLiaisonCouleurP = "LCP" + counter.seq.toString().padStart(3, "0");
+  }
+
+})
 
 module.exports = mongoose.model('Liaison_couleur_produit', userSchema);
