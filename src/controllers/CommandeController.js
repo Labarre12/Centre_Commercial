@@ -1,5 +1,7 @@
 const Commande = require('../models/Commande');
 const Vente = require('../models/Vente');
+const Produit = require('../models/Produit');
+
 
 // Créer une commande
 exports.createCommande = async (req, res) => {
@@ -49,22 +51,54 @@ exports.getCommandeById = async (req, res) => {
   }
 };
 
-// Modifier une commande
+// Modifier une commande (général)
+// Si le statut est modifié vers "PAYEE" et qu'il ne l'était pas auparavant,
+// on crée les enregistrements correspondants dans la table `Vente`.
 exports.updateCommande = async (req, res) => {
   try {
-    const commande = await Commande.findOneAndUpdate(
-      { idcommande: req.params.idCommande },
-      req.body,
-      { new: true }
-    );
+    // trouver la commande existante pour connaître l'ancien statut
+    const commande = await Commande.findOne({ idcommande: req.params.idCommande });
     if (!commande) {
       return res.status(404).json({ message: 'Commande non trouvée' });
     }
-    res.status(200).json(commande);
+
+    const ancienStatus = commande.idstatus;
+
+    // appliquer les changements reçus
+    Object.assign(commande, req.body);
+    await commande.save();
+
+    let ventes = [];
+
+    if (ancienStatus !== commande.idstatus && commande.idstatus === 'PAYEE') {
+      // créer une vente pour chaque produit de la commande
+      for (const item of commande.produits) {
+        // tenter de récupérer le prix à partir du produit
+        let prix = 0;
+        try {
+          const prod = await Produit.findOne({ idProduit: item.idproduit }).select('prix');
+          if (prod) prix = prod.prix;
+        } catch (err) {
+          // ignore, on gardera 0
+        }
+        const vente = new Vente({
+          idBoutique: commande.idboutique,
+          idProduit: item.idproduit,
+          quantite: item.quantite,
+          prix,
+          idAcheteur: commande.idAcheteur,
+        });
+        await vente.save();
+        ventes.push(vente);
+      }
+    }
+
+    res.status(200).json({ commande, ventes });
   } catch (error) {
     res.status(400).json({ message: error.message });
   }
 };
+
 
 // Annuler une commande
 exports.deleteCommande = async (req, res) => {
@@ -150,5 +184,52 @@ exports.commanderEtPayer = async (req, res) => {
         timestamp: new Date().toISOString()
       }
     });
+  }
+};
+// Mettre à jour uniquement le statut et éventuellement déclencher l'insertion en ventes
+exports.updateStatut = async (req, res) => {
+  try {
+    const { idCommande } = req.params;
+    const { idstatus } = req.body;
+    if (!idstatus) {
+      return res.status(400).json({ message: 'idstatus requis' });
+    }
+
+    const commande = await Commande.findOne({ idcommande: idCommande });
+    if (!commande) {
+      return res.status(404).json({ message: 'Commande non trouvée' });
+    }
+
+    const ancienStatus = commande.idstatus;
+    commande.idstatus = idstatus;
+    await commande.save();
+
+    let ventes = [];
+    if (ancienStatus !== 'PAYEE' && idstatus === 'PAYEE') {
+      for (const item of commande.produits) {
+        let prix = 0;
+        try {
+          const prod = await Produit.findOne({ idProduit: item.idproduit }).select('prix');
+          if (prod) prix = prod.prix;
+        } catch (err) {}
+        const vente = new Vente({
+          idBoutique: commande.idboutique,
+          idProduit: item.idproduit,
+          quantite: item.quantite,
+          prix,
+          idAcheteur: commande.idAcheteur,
+        });
+        await vente.save();
+        ventes.push(vente);
+      }
+    }
+
+    // Mettre le statut à CONFIRME à la fin
+    commande.idstatus = 'CONFIRME';
+    await commande.save();
+
+    res.status(200).json({ commande, ventes });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
   }
 };

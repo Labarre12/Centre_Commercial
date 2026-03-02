@@ -14,6 +14,8 @@ router.post('/boutique/:idBoutique/commander-payer', commandeController.commande
 // Routes classiques commandes
 router.get('/:idCommande', commandeController.getCommandeById);
 router.put('/:idCommande', commandeController.updateCommande);
+// mise à jour uniquement du statut (confirmation/paiement -> enregistrement en vente)
+router.patch('/:idCommande/statut', commandeController.updateStatut);
 router.delete('/:idCommande', commandeController.deleteCommande);
 
 module.exports = router;
