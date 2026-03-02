@@ -10,7 +10,6 @@ router.get('/test', (req, res) => {
 // Commander et payer pour une boutique
 router.post('/boutique/:idBoutique/commander-payer', commandeController.commanderEtPayer);
 
-router.post('/boutique/:idBoutique/commander-payer', commandeController.commanderEtPayer);
 
 // Routes classiques commandes
 router.get('/:idCommande', commandeController.getCommandeById);
